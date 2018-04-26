@@ -1,3 +1,9 @@
+//Quicklists is our shopping list application created by Nick and Bakr for acit 2520
+//Added Bhavya Shaun Brendan for project term acit 2910
+
+
+
+
 // setup stuff
 const express = require('express');
 const hbs = require('hbs');
