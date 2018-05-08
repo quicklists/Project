@@ -41,6 +41,20 @@ function readFile(data, callback){
 		});
 	});
 }
+
+function dropCategory(){
+	MongoClient.connect(url, function(err, client) {
+		if(err) {
+	    	console.log(err);
+		}
+	const db = client.db('grocery_list_project')
+	const collection = db.collection('Users')
+	db.collection.getIndexes()
+
+
+}
+dropCategory()
 module.exports = {
-	readFile
+	readFile,
+	dropCategory
 }
