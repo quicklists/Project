@@ -72,10 +72,23 @@ function addRecord(record,table){
         client.close();
     });
 }   
-
+function deleteRecord(record,table){
+	MongoClient.connect(url, function(err, client) {
+		if(err) {
+	    	console.log(err);
+		}
+		const db = client.db('grocery_list_project')
+		db.collection(table).deleteOne(record, function(err, obj) {
+	    if (err) throw err;
+	    console.log("1 document deleted");
+	  	});
+		client.close();
+	});
+}
 module.exports = {
 	readFile,
 	addRecord,
-	createTable
+	createTable,
+    deleteRecord
 }
 
