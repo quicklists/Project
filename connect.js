@@ -25,7 +25,7 @@ const url = 'mongodb://Nick.s:student@ds014388.mlab.com:14388/grocery_list_proje
 function readFile(data, callback){
 	MongoClient.connect(url, function(err, client) {
 		if(err) {
-	    	console.log(err);
+	    	console.log(err); 
 		}
 
 	  	const db = client.db('grocery_list_project')
@@ -44,3 +44,16 @@ function readFile(data, callback){
 module.exports = {
 	readFile
 }
+
+// var obj = {
+// 	id:expect.anything(),
+// 	name:expect.anything()
+// }
+
+// test("dbRead", (done)=>{
+// 	readFile({data:"stuff"}, (err, data)=>{
+// 		expect(data).toBe("failed");
+// 		expect(data).toEqual(obj);
+// 		done();
+// 	})
+// })

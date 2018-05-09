@@ -44,14 +44,42 @@ app.use(session({
  * Sets username and password
  * gets and renders the home.hbs file
  */
+function login(email, password, callback) {
+    getDB.readFile({email: email}, (err, user) => {
+        if(user === 'failed') {
+            callback(err, 'failed')
+        } else {
+            if (password === user.password) {
+                callback(err, user)
+            } else {
+                callback(err, 'failed')
+            }
+        }
+    }); 
+}
+
+app.post('/login', function(req, res) {
+    login(req.body.email, req.body.password, (err, user) => {
+        if (user === 'failed') {
+            res.render('login.hbs', {
+                error: 'Wrong email or password'
+            });
+        } else {
+            req.session.user = user
+            res.redirect('/homePage')
+        }
+    });
+});
+
+
 app.post('/login', function(req, res) {
 
     getDB.readFile({email: req.body.email}, function(err, user) {
-    	if(user === 'failed') {
-    		res.render('login.hbs', {
+        if(user === 'failed') {
+            res.render('login.hbs', {
                 error: 'Wrong email or password'
             });
-    	} else {
+        } else {
             if (req.body.password === user.password) {
                 req.session.user = user
                 res.redirect('/homePage')
@@ -63,6 +91,7 @@ app.post('/login', function(req, res) {
         }
     });
 });
+
 
 // Renders the login page
 app.get('/', (request, response) => {
@@ -91,6 +120,8 @@ app.get('/homePage', function(req, res) {
 		res.redirect('/');
 	}
 });
+
+
 
 /** User input what grocery items they want and then click a button. 
 The webpage then requests information from the database, which then response by sending that information back to the webpage. 
@@ -123,15 +154,6 @@ app.get('/logout', (req, res) => {
     req.session.reset();
     res.redirect('/');
 })
-
-// Doesn't need to connect to db
-function requiredLogin(req, res, next) {
-    if (!req.user) {
-        res.redirect('/')
-    } else {
-        next();
-    }
-}
 
 app.listen(port, () => {
     console.log(`Server is up on the port ${port}`);
