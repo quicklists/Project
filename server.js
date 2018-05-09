@@ -121,7 +121,10 @@ app.get('/homePage', function(req, res) {
 	}
 });
 
-
+app.post('/add-new-item', function(req, res) {
+    console.log(req.body)
+    res.send('ok')
+});
 
 /** User input what grocery items they want and then click a button. 
 The webpage then requests information from the database, which then response by sending that information back to the webpage. 
