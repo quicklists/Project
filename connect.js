@@ -41,10 +41,45 @@ function readFile(data, callback){
 		});
 	});
 }
-module.exports = {
-	readFile
+
+function createTable(newTable) {
+	MongoClient.connect(url, function(err, client) {
+		if(err) {
+	    	console.log(err);
+		}
+		
+		const db = client.db('grocery_list_project')
+		
+		db.createCollection(newTable, function(err, res) {
+			if (err) throw err;
+			console.log("Collection created!");
+			client.close();
+		});
+	});
 }
 
+function addRecord(record,table){
+    MongoClient.connect(url, function(err, client) {
+        if(err) {
+	    	console.log(err);
+		}
+        const db = client.db('grocery_list_project')
+
+	    db.collection(table).insertOne(record, function(err, res) {
+        if (err) throw err;
+    	    console.log("1 document inserted");
+    	});
+        client.close();
+    });
+}   
+
+module.exports = {
+	readFile,
+	addRecord,
+	createTable
+}
+
+// henrys unittest example to me (nick)
 // var obj = {
 // 	id:expect.anything(),
 // 	name:expect.anything()
@@ -57,3 +92,4 @@ module.exports = {
 // 		done();
 // 	})
 // })
+
