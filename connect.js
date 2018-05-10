@@ -79,8 +79,8 @@ function deleteRecord(record,table){
 		}
 		const db = client.db('grocery_list_project')
 		db.collection(table).deleteOne(record, function(err, obj) {
-	    if (err) throw err;
-	    console.log("1 document deleted");
+            if (err) throw err;
+            console.log("1 document deleted");
 	  	});
 		client.close();
 	});
