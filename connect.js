@@ -8,11 +8,9 @@ const url = 'mongodb://Nick.s:student@ds014388.mlab.com:14388/grocery_list_proje
 	  	} else {
 	  		console.log('We are connected to mongodb!');
 	  	}
-
 	  	//setup for DB
 	  	const db = client.db('grocery_list_project')
 	  	const collection = db.collection('nick')
-
 	  	if(data.type === "findOne"){
 	  		collection.findOne(data.data)....
 	  		{
