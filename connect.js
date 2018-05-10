@@ -40,18 +40,21 @@ function readFile(data, callback){
 	});
 }
 
-function dropCategory(){
+function dropCategory(user,list,category){
 	MongoClient.connect(url, function(err, client) {
 		if(err) {
 	    	console.log(err);
 		}
 	const db = client.db('grocery_list_project')
 	const collection = db.collection('Users')
-	db.collection.getIndexes()
+	var myObj = collection.find({'user':user});
+	//the indexes shouldnt be 0 they need to be the index of the thing were passing in
+	delete myObj.lists[0].category[0];
+	//then have to update the collection
 
 
 }
-dropCategory()
+
 module.exports = {
 	readFile,
 	dropCategory
