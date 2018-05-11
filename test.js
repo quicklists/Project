@@ -58,11 +58,7 @@ var myDB = require("./connect");
 
 var obj = {
    
-<<<<<<< HEAD
     "username": "brendon1",
-=======
-    "username": "brendon",
->>>>>>> upstream/master
     "email": "brendon@1234",
     "password": "1234",
     "lists": [
