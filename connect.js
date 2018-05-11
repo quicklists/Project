@@ -40,22 +40,58 @@ function readFile(data, callback){
 	});
 }
 
-function dropCategory(user,list,category){
+// function dropCategory(user,list,category){
+// 	MongoClient.connect(url, function(err, client) {
+// 		if(err) {
+// 	    	console.log(err);
+// 		}
+// 	const db = client.db('grocery_list_project')
+// 	const collection = db.collection('Users')
+// 	var myObj = collection.find({'user':user});
+// 	//the indexes shouldnt be 0 they need to be the index of the thing were passing in
+// 	var check = myObj.lists.indexOf(list);
+// 	var secondIndex = myObj.lists[check].category.indexOf(category);
+// 	if(check!=-1 && secondIndex!= -1 )
+// 	{
+// 		delete myObj.lists.[check].category[secondIndex];
+// 		db.collection.replaceOne({'user':user,myObj)
+// 	}
+// 	//then have to update the collection
+
+
+// }
+function updateDb(email,data)
+{
 	MongoClient.connect(url, function(err, client) {
 		if(err) {
 	    	console.log(err);
 		}
-	const db = client.db('grocery_list_project')
-	const collection = db.collection('Users')
-	var myObj = collection.find({'user':user});
-	//the indexes shouldnt be 0 they need to be the index of the thing were passing in
-	delete myObj.lists[0].category[0];
-	//then have to update the collection
 
+	  	const db = client.db('grocery_list_project')
+	  	const collection = db.collection('Users')
+
+	  	collection.replaceOne(email, data);
+
+	  	client.close();
+	  });
+
+}
+function dropCategory(email, listIndex, categoryIndex){
+
+    readFile(email, function(err, user) {
+    	
+    	delete user.lists[listIndex].categories[categoryIndex];
+    	
+   		updateDb(email, user)
+
+    })
 
 }
 
+
+
 module.exports = {
 	readFile,
-	dropCategory
+	dropCategory,
+	updateDb
 }
