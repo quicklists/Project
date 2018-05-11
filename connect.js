@@ -129,7 +129,7 @@ function deleteRecord(record,table, callback){
 module.exports = {
 	readFile,
 	addRecord,
-	createTable,
+	updateDb,
     deleteRecord,
     dropCategory
 }
