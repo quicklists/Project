@@ -58,7 +58,11 @@ var myDB = require("./connect");
 
 var obj = {
    
+<<<<<<< HEAD
     "username": "brendon1",
+=======
+    "username": "brendon",
+>>>>>>> upstream/master
     "email": "brendon@1234",
     "password": "1234",
     "lists": [
@@ -93,22 +97,17 @@ var obj = {
     ]
 };
 
-describe.skip("addRecord function testing", ()=>{
+describe.only("addRecord function testing", ()=>{
     test("added product to a list", ()=>{
         myDB.addRecord(obj,"Users", function(msg){
             expect(msg).toBe("success");
         })
-        
-    
     });
-    
 });
 describe.only("deleteRecord function testing", ()=>{
     test("added product to a list", ()=>{
         myDB.deleteRecord(obj,"Users", function(msg){
             expect(msg).toBe("success");
         })
-        
     });
-    
-    });
+});
