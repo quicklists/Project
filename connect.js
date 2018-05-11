@@ -85,6 +85,26 @@ function dropCategory(email, listIndex, categoryIndex){
    		updateDb(email, user)
 
     })
+function addRecord(record,table, callback){
+    MongoClient.connect(url, function(err, client) {
+        if(err) {
+	    	console.log(err);
+		}
+        const db = client.db('grocery_list_project')
+
+	    db.collection(table).insertOne(record, function(err, res) {
+        if (err){
+            callback("error");
+            throw err;
+        } else {
+    	    console.log("1 document inserted");
+            callback("success");
+        }
+    	});
+        client.close();
+    });
+}   
+
 
 }
 
