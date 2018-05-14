@@ -40,8 +40,6 @@ function readFile(data, callback){
 	});
 }
 
-
-
 function updateDb(email,data)
 {
 	MongoClient.connect(url, function(err, client) {
@@ -58,6 +56,7 @@ function updateDb(email,data)
 	  });
 
 }
+
 function dropCategory(email, listIndex, categoryIndex){
 
     readFile(email, function(err, user) {
@@ -67,7 +66,19 @@ function dropCategory(email, listIndex, categoryIndex){
    		updateDb(email, user)
 
     })
+}
 
+function addCategoryDb(email, listIndex, categoryName) {
+	readFile(email, function(err, user) {
+
+		var categoryObj = {"name":categoryName,
+							"items":[]};
+		user.lists[listIndex].categories.push(categoryObj);
+
+		console.log(user.lists[0].categories);
+
+		updateDb(email, user)
+	})
 }
 
 function addRecord(record,table, callback){
@@ -88,7 +99,8 @@ function addRecord(record,table, callback){
     	});
         client.close();
     });
-}   
+}
+
 function deleteRecord(record,table, callback){
     MongoClient.connect(url, function(err, client) {
         if(err) {
