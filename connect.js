@@ -8,11 +8,9 @@ const url = 'mongodb://Nick.s:student@ds014388.mlab.com:14388/grocery_list_proje
 	  	} else {
 	  		console.log('We are connected to mongodb!');
 	  	}
-
 	  	//setup for DB
 	  	const db = client.db('grocery_list_project')
 	  	const collection = db.collection('nick')
-
 	  	if(data.type === "findOne"){
 	  		collection.findOne(data.data)....
 	  		{
@@ -47,23 +45,32 @@ function readFile(email, callback){
 	});
 }
 
-function createTable(newTable) {
+
+
+function updateDb(email,data)
+{
 	MongoClient.connect(url, function(err, client) {
 		if(err) {
 	    	console.log(err);
 		}
-		
-		const db = client.db('grocery_list_project')
-		
-		db.createCollection(newTable, function(err, res) {
-			if (err) throw err;
-			console.log("Collection created!");
-			client.close();
-		});
-	});
+
+	  	const db = client.db('grocery_list_project')
+	  	const collection = db.collection('Users')
+
+	  	collection.replaceOne(email, data);
+
+	  	client.close();
+	  });
+
+}
+function dropCategory(email, listIndex, categoryIndex) {
+    readFile(email, function(err, user) {
+    	delete user.lists[listIndex].categories[categoryIndex];
+   		updateDb(email, user)
+    })
 }
 
-function addRecord(record, table) {
+function addRecord(record, table, callback) {
     MongoClient.connect(url, function(err, client) {
         if(err) {
 	    	console.log(err);
@@ -71,28 +78,42 @@ function addRecord(record, table) {
         const db = client.db('grocery_list_project')
 
 	    db.collection(table).insertOne(record, function(err, res) {
-        if (err) throw err;
+        if (err){
+            callback("error");
+            throw err;
+        } else {
     	    console.log("1 document inserted");
+            callback("success");
+        }
     	});
         client.close();
     });
 }   
-
-// function updateDB(email, data) {
-	
-// }
-
-function dropCategory(email, listIndex, categoryIndex) {
-    readFile(email, function(err, user) {
-    	delete user.lists[listIndex].categories[categoryIndex]
-   		// call an update function here
-    })
+function deleteRecord(record,table, callback) {
+    MongoClient.connect(url, function(err, client) {
+        if(err) {
+	    	console.log(err);
+		}
+        const db = client.db('grocery_list_project')
+        
+	    db.collection(table).deleteOne(record, function(err, res) {
+        if (err){
+            callback("error");
+            throw err;
+        } else {
+            console.log("1 document deleted");
+            callback("success");
+    }
+  });
+  client.close();
+    });
 }
 
 module.exports = {
 	readFile,
 	addRecord,
-	createTable,
+	updateDb,
+    deleteRecord,
 	dropCategory
 }
 

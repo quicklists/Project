@@ -45,7 +45,7 @@ app.use(session({
  * gets and renders the home.hbs file
  */
 function login(email, password, callback) {
-    if (email.indexOf('@') > 0 && email.indexOf('.') === 1 && (email.indexOf('com') > 0 || email.indexOf('ca') > 0)) {
+    if (email.indexOf('@') > 0 && email.indexOf('.') > 0 && (email.indexOf('com') > 0 || email.indexOf('ca') > 0)) {
         getDB.readFile(email, (err, user) => {
             if(user === 'failed') {
                 callback(err, 'failed')
@@ -93,14 +93,44 @@ app.get('/SignupPage', (request, response) => {
  * @param {JSON} response
  */
 app.get('/homePage', function(req, res) {
-	if(req.session && req.session.user){
-		res.render('home.hbs', {
+    if(req.session && req.session.user){
+        res.render('home.hbs', {
             email: req.session.user.email,
             lists: req.session.user.lists
         });
-	} else {
-		res.redirect('/');
-	}
+    } else {
+        res.redirect('/');
+    }
+});
+
+/** User input what items they want and then click a button.
+ * @name ListPage
+ * @function
+ * @param {JSON} request
+ * @param {JSON} response
+ */
+app.get('/listsPage/:listname', function(req, res) {
+    if(req.session && req.session.user) {
+        var allLists = req.session.user.lists;
+        var listName = req.params.listname;
+        var correctList = null;
+
+        // GO TRHOUGH ALL LIST ITEMS
+          // IF CURRENT LIST.name === listName
+            // correctList = CURRENT LIST 
+            // break;
+
+        // IF correctLIST === null ???
+            // render ERROR>HBS
+        // ELSE
+            // render list.hbs
+
+            res.render('lists.hbs', {
+            list: correctList
+        });
+    } else {
+        res.redirect('/');
+    }
 });
 
 app.post('/add-new-item', function(req, res) {
@@ -111,30 +141,38 @@ app.post('/add-new-item', function(req, res) {
 /** User input what grocery items they want and then click a button. 
 The webpage then requests information from the database, which then response by sending that information back to the webpage. 
 Next, the requested information is displayed on the webpage. 
- * @name ListPage
+ * @name groceryListPage
  * @function
  * @param {JSON} request
  * @param {JSON} response
  */
-app.get('/listsPage', function(req, res) {
-	if(req.session && req.session.user) {
-		res.render('lists.hbs', {
+app.get('/groceryListPage', function(req, res) {
+    if(req.session && req.session.user) {
+        res.render('grocerylist.hbs', {
             lists: req.session.user.lists
         });
-	} else {
-		res.redirect('/');
-	}
+    } else {
+        res.redirect('/');
+    }
+});
+
+/**
+ * respond with "ok" when a GET request is made to the add new item
+ * @name add new item
+ * @function
+ */
+app.post('/add-new-item', function(req, res) {
+    console.log(req.body)
+    res.send('ok')
 });
 
 /*
  * Start the account page
  */
-// Doesn't need to connect to db
 app.get('/account', (request, response) => {
     response.render('accountsettings.hbs')
 });
 
-// Doesn't need to connect to db
 app.get('/logout', (req, res) => {
     req.session.reset();
     res.redirect('/');
