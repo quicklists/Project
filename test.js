@@ -39,7 +39,7 @@ const binaryParser = function(res, cb) {
     /*
      * POST Login Validation
      */
-    describe.skip("POST /login", () => {
+    describe("POST /login", () => {
         test("Should display error message", () => {
             return chai.request(server)
                 .post('/login')
@@ -93,44 +93,38 @@ var obj = {
     ]
 };
 
-describe.skip("addRecord function testing", ()=>{
+describe("addRecord function testing", ()=>{
     test("added product to a list", ()=>{
-        myDB.addRecord(obj,"Users", function(msg){
+        myDB.addUserDb(obj,"Users", function(msg){
+            expect(msg).toBe("success");
+        })
+    });
+});
+describe("deleteRecord function testing", ()=>{
+    test("deleted product from a list", ()=>{
+        myDB.deleteUserDb(obj,"Users", function(msg){
             expect(msg).toBe("success");
         })
     });
 });
 
-describe.only("dropCategory function testing", ()=>{
-	test("delete category inside list", ()=>{
-		myDB.dropCategory(obj,"Categories", function(msg){
-			expect(msg).toBe("success");
-
-       })
-
-   });
-
-});
-        
-
-describe.skip("deleteRecord function testing", ()=>{
-    test("added product to a list", ()=>{
-        myDB.deleteRecord(obj,"Users", function(msg){
+describe("dropCategory function testing", ()=>{
+    test("delete category inside list", ()=>{
+        myDB.deleteCategoryDb(obj,"Categories", function(msg){
             expect(msg).toBe("success");
         })
-    });
-});
+    })
+})
 
 
-var listNameValidate = require("./validate.js");
+/*var listNameValidate = require("./validate.js");
 
-describe.only("list names testing", ()=>{
+describe("list names testing", ()=>{
     test("a valid list name with space", ()=>{
-        expect(listNameValidate("l i s t")).toBe("list");
+        expect(listNameValidate("l i s t")).toBeFalsy();
     });
 
     test("a valid list name with case sensitive", ()=>{
-        expect(listNameValidate("List")).toBe("list");
+        expect(listNameValidate("List")).toBeTruthy();
     });
-});
-
+});*/
