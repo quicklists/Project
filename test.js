@@ -93,7 +93,7 @@ var obj = {
     ]
 };
 
-describe.only("addRecord function testing", ()=>{
+describe.skip("addRecord function testing", ()=>{
     test("added product to a list", ()=>{
         myDB.addRecord(obj,"Users", function(msg){
             expect(msg).toBe("success");
@@ -103,5 +103,14 @@ describe.only("addRecord function testing", ()=>{
     });
     
 });
-    
+describe.only("dropCategory function testing", ()=>{
+	test("delete category inside list", ()=>{
+		myDB.dropCategory(obj,"Categories", function(msg){
+			expect(msg).toBe("success");
+
+       })
+
+   });
+
+});
         
