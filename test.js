@@ -122,7 +122,7 @@ describe.skip("deleteRecord function testing", ()=>{
 });
 
 
-var listNameValidate = require("./validate.js");
+/*var listNameValidate = require("./validate.js");
 
 describe.only("list names testing", ()=>{
     test("a valid list name with space", ()=>{
@@ -132,5 +132,4 @@ describe.only("list names testing", ()=>{
     test("a valid list name with case sensitive", ()=>{
         expect(listNameValidate("List")).toBe("list");
     });
-});
-
+});*/
