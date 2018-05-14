@@ -58,7 +58,7 @@ var myDB = require("./connect");
 
 var obj = {
    
-    "username": "brendon",
+    "username": "brendon1",
     "email": "brendon@1234",
     "password": "1234",
     "lists": [
@@ -98,11 +98,9 @@ describe.skip("addRecord function testing", ()=>{
         myDB.addRecord(obj,"Users", function(msg){
             expect(msg).toBe("success");
         })
-        
-    
     });
-    
 });
+
 describe.only("dropCategory function testing", ()=>{
 	test("delete category inside list", ()=>{
 		myDB.dropCategory(obj,"Categories", function(msg){
@@ -114,3 +112,25 @@ describe.only("dropCategory function testing", ()=>{
 
 });
         
+
+describe.skip("deleteRecord function testing", ()=>{
+    test("added product to a list", ()=>{
+        myDB.deleteRecord(obj,"Users", function(msg){
+            expect(msg).toBe("success");
+        })
+    });
+});
+
+
+var listNameValidate = require("./validate.js");
+
+describe.only("list names testing", ()=>{
+    test("a valid list name with space", ()=>{
+        expect(listNameValidate("l i s t")).toBe("list");
+    });
+
+    test("a valid list name with case sensitive", ()=>{
+        expect(listNameValidate("List")).toBe("list");
+    });
+});
+
