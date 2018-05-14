@@ -39,23 +39,27 @@ app.use(session({
 /**
  * @login
  * Checks database for the account, if it exists it moves to 'homePage.hbs'. if it does not it renders 'login.hbs' with a error message
- * @param {string} Username 
+ * @param {string} Email
  * @param {string} Password 
  * Sets username and password
  * gets and renders the home.hbs file
  */
 function login(email, password, callback) {
-    getDB.readFile({email: email}, (err, user) => {
-        if(user === 'failed') {
-            callback(err, 'failed')
-        } else {
-            if (password === user.password) {
-                callback(err, user)
-            } else {
+    if (email.indexOf('@') > 0 && email.indexOf('.') === 1 && (email.indexOf('com') > 0 || email.indexOf('ca') > 0)) {
+        getDB.readFile(email, (err, user) => {
+            if(user === 'failed') {
                 callback(err, 'failed')
+            } else {
+                if (password === user.password) {
+                    callback(err, user)
+                } else {
+                    callback(err, 'failed')
+                }
             }
-        }
-    }); 
+        }); 
+    } else {
+        callback('failed')
+    }
 }
 
 app.post('/login', function(req, res) {
@@ -70,28 +74,6 @@ app.post('/login', function(req, res) {
         }
     });
 });
-
-
-app.post('/login', function(req, res) {
-
-    getDB.readFile({email: req.body.email}, function(err, user) {
-        if(user === 'failed') {
-            res.render('login.hbs', {
-                error: 'Wrong email or password'
-            });
-        } else {
-            if (req.body.password === user.password) {
-                req.session.user = user
-                res.redirect('/homePage')
-            } else {
-                res.render('login.hbs', {
-                    error: 'Wrong email or password'
-                });
-            }
-        }
-    });
-});
-
 
 // Renders the login page
 app.get('/', (request, response) => {
@@ -165,4 +147,8 @@ app.listen(port, () => {
 /*
  * For Unit Testing
  */
-module.exports = app;
+// module.exports = app;
+
+module.exports = {
+    login
+}

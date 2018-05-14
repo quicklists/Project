@@ -22,16 +22,21 @@ const url = 'mongodb://Nick.s:student@ds014388.mlab.com:14388/grocery_list_proje
 	  	}
 	  })
 	},*/
-function readFile(data, callback){
+function connectDB(callback) {
 	MongoClient.connect(url, function(err, client) {
-		if(err) {
-	    	console.log(err); 
-		}
+        if(err) {
+            console.log(err);
+        }
+	    const db = client.db('grocery_list_project')
+	    const collection = db.collection('Users')
 
-	  	const db = client.db('grocery_list_project')
-	  	const collection = db.collection('Users')
+	    callback(collection, client)
+	});
+}
 
-		collection.findOne(data, function(err, user) {
+function readFile(email, callback){
+	connectDB(function(collection, client) {
+		collection.findOne({email: email}, function(err, user) {
 			if(!user) {
 				callback(err, 'failed')
 			} else {
@@ -58,7 +63,7 @@ function createTable(newTable) {
 	});
 }
 
-function addRecord(record,table){
+function addRecord(record, table) {
     MongoClient.connect(url, function(err, client) {
         if(err) {
 	    	console.log(err);
@@ -73,10 +78,22 @@ function addRecord(record,table){
     });
 }   
 
+// function updateDB(email, data) {
+	
+// }
+
+function dropCategory(email, listIndex, categoryIndex) {
+    readFile(email, function(err, user) {
+    	delete user.lists[listIndex].categories[categoryIndex]
+   		// call an update function here
+    })
+}
+
 module.exports = {
 	readFile,
 	addRecord,
-	createTable
+	createTable,
+	dropCategory
 }
 
 // henrys unittest example to me (nick)
