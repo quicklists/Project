@@ -39,7 +39,7 @@ const binaryParser = function(res, cb) {
 /*
  * POST Login Validation
  */
-describe.skip("POST /login", () => {
+describe("POST /login", () => {
     test("Should display error message", () => {
         return chai.request(server)
             .post('/login')
@@ -51,10 +51,7 @@ describe.skip("POST /login", () => {
             });
     });
 });
-
 var myDB = require("./connect");
-
-
 var obj = {
    
     "username": "brendon1",
@@ -99,6 +96,7 @@ describe("addRecord function testing", ()=>{
         })
     });
 });
+
 describe("deleteRecord function testing", ()=>{
     test("deleted product from a list", ()=>{
         myDB.deleteUserDb(obj,"Users", function(msg){
@@ -115,8 +113,7 @@ describe("dropCategory function testing", ()=>{
     })
 })
 
-
-/*var listNameValidate = require("./validate.js");
+var listNameValidate = require("./validate.js");
 
 describe("list names testing", ()=>{
     test("a valid list name with space", ()=>{
@@ -126,4 +123,22 @@ describe("list names testing", ()=>{
     test("a valid list name with case sensitive", ()=>{
         expect(listNameValidate("List")).toBeTruthy();
     });
-});*/
+});
+
+// nick - Tests the refactored login function for proper email format
+
+describe("login validation testing.", () => {
+    test("email should be proper email format.", () => {
+        server.login('nick123.com', '123', (user) => {
+            expect(user).toBe('failed');
+        });
+
+        server.login('nick@123', '123', (user) => {
+            expect(user).toBe('failed');
+        });
+
+        server.login('nick@123com', '123', (user) => {
+            expect(user).toBe('failed');
+        });
+    });
+});

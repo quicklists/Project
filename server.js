@@ -39,27 +39,38 @@ app.use(session({
 /**
  * @login
  * Checks database for the account, if it exists it moves to 'homePage.hbs'. if it does not it renders 'login.hbs' with a error message
- * @param {string} Username 
+ * @param {string} Email
  * @param {string} Password 
  * Sets username and password
  * gets and renders the home.hbs file
  */
-app.post('/login', function(req, res) {
+function login(email, password, callback) {
+    if (email.indexOf('@') > 0 && email.indexOf('.') > 0 && (email.indexOf('com') > 0 || email.indexOf('ca') > 0)) {
+        getDB.readFile(email, (err, user) => {
+            if(user === 'failed') {
+                callback(err, 'failed')
+            } else {
+                if (password === user.password) {
+                    callback(err, user)
+                } else {
+                    callback(err, 'failed')
+                }
+            }
+        }); 
+    } else {
+        callback('failed')
+    }
+}
 
-    getDB.readFile({email: req.body.email}, function(err, user) {
-        if(user === 'failed') {
+app.post('/login', function(req, res) {
+    login(req.body.email, req.body.password, (err, user) => {
+        if (user === 'failed') {
             res.render('login.hbs', {
                 error: 'Wrong email or password'
             });
         } else {
-            if (req.body.password === user.password) {
-                req.session.user = user
-                res.redirect('/homePage')
-            } else {
-                res.render('login.hbs', {
-                    error: 'Wrong email or password'
-                });
-            }
+            req.session.user = user
+            res.redirect('/homePage')
         }
     });
 });
@@ -122,6 +133,19 @@ app.get('/listsPage/:listname', function(req, res) {
     }
 });
 
+app.post('/addItem', function(req, res) {
+    console.log(req.body)
+    res.send('ok')
+});
+
+app.post('/deleteItem', function(req, res) {
+    var email = req.session.user.email
+    var list = req.session.user.currentList
+    var category = req.body.category
+    getDB.dropCategory(email, list, category)
+    res.send('ok')
+})
+
 /** User input what grocery items they want and then click a button. 
 The webpage then requests information from the database, which then response by sending that information back to the webpage. 
 Next, the requested information is displayed on the webpage. 
@@ -132,22 +156,13 @@ Next, the requested information is displayed on the webpage.
  */
 app.get('/groceryListPage', function(req, res) {
     if(req.session && req.session.user) {
+        req.session.user.currentList = req.session.user.lists[0].name
         res.render('grocerylist.hbs', {
             lists: req.session.user.lists
         });
     } else {
         res.redirect('/');
     }
-});
-
-/**
- * respond with "ok" when a GET request is made to the add new item
- * @name add new item
- * @function
- */
-app.post('/add-new-item', function(req, res) {
-    console.log(req.body)
-    res.send('ok')
 });
 
 /*
@@ -162,14 +177,6 @@ app.get('/logout', (req, res) => {
     res.redirect('/');
 })
 
-function requiredLogin(req, res, next) {
-    if (!req.user) {
-        res.redirect('/')
-    } else {
-        next();
-    }
-}
-
 app.listen(port, () => {
     console.log(`Server is up on the port ${port}`);
 });
@@ -177,4 +184,8 @@ app.listen(port, () => {
 /*
  * For Unit Testing
  */
-module.exports = app;
+// module.exports = app;
+
+module.exports = {
+    login
+}
