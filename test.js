@@ -1,5 +1,5 @@
 var myDB = require("./connect");
-var server = require("./server.js")
+// var server = require("./server.js")
 var obj = {
    
     "username": "brendon1",
@@ -37,7 +37,7 @@ var obj = {
     ]
 };
 
-describe.skip("addRecord function testing", ()=>{
+describe("addRecord function testing", ()=>{
     test("added product to a list", ()=>{
         myDB.addUserDB(obj, "Users", function(msg){
             expect(msg).toBe("success");
@@ -53,7 +53,7 @@ describe.skip("deleteRecord function testing", ()=>{
     });
 });
 
-describe.skip("dropCategory function testing", () => {
+describe("dropCategory function testing", () => {
     test("delete category inside list", () => {
         myDB.deleteCategoryDB('nick@123.ca', 'grocery list', 'Produce', (msg) => {
             expect(msg).toBe("success");
@@ -77,7 +77,7 @@ describe.skip("login validation testing.", () => {
     });
 });
 
-describe.skip("getListIndex testing", () => {
+describe("getListIndex testing", () => {
     test("should return a number", () => {
         expect(myDB.getListIndex('grocery list', obj)).toBe(0);
     })
