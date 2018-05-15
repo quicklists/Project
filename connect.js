@@ -124,15 +124,15 @@ function addCategoryDB(email, listIndex, categoryName) {
 	});
 }
 
-    readFile(email, function(err, user) {
+//     readFile(email, function(err, user) {
     	
-    	delete user.lists[listIndex].categories[categoryIndex];
+//     	delete user.lists[listIndex].categories[categoryIndex];
     	
-   		updateDb(email, user)
+//    		updateDb(email, user)
 
-    })
+//     })
 
-}
+// }
 
 function addRecord(record,table, callback){
     MongoClient.connect(url, function(err, client) {
