@@ -60,11 +60,10 @@ function addItem() {
 		// problem: can be number
 		if (myName === null && itemName.length > 0) {
 			var xhr = new XMLHttpRequest();
-			xhr.open('POST', '/add-new-item');
+			xhr.open('POST', '/addItem');
 			xhr.setRequestHeader('Content-Type', 'application/json');
 			xhr.onload = function() {
 		    if (xhr.status === 200) {
-		        console.log('added');
 			    var newElem = document.createElement('LI');
 				var newId = document.createTextNode(itemName)
 
@@ -80,7 +79,7 @@ function addItem() {
 		};
 
 	    	xhr.send(JSON.stringify({
-			    itemName: itemName,
+			    item: itemName,
 			    category: categoryName
 			}));
 
@@ -99,7 +98,20 @@ function delCategory() {
 	if (myCategory === null) {
 		alert('Category does not exist!')
 	} else { 
-		myCategory.parentNode.removeChild(myCategory);
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST', '/deleteItem');
+			xhr.setRequestHeader('Content-Type', 'application/json');
+			xhr.onload = function() {
+		    if (xhr.status === 200) {
+				myCategory.parentNode.removeChild(myCategory);
+		    } else {
+		        console.log('Error, not saved on the server');
+		    }
+		};
+
+    	xhr.send(JSON.stringify({
+		    category: categoryName
+		}));
 	}
 }
 
@@ -115,6 +127,39 @@ function delItem() {
 		myItem.parentNode.removeChild(myItem);
 	}
 }
+
+/**
+ * This function adds a new list
+ */
+function newList() {
+	var chooseListInput = document.getElementById('chooseList');
+	var listName = chooseListInput.value;
+	chooseListInput.value = '';
+	chooseListInput.focus();
+	var myElem = document.getElementById(listName);
+	if (myElem === null) {
+		var newElem = document.createElement('form');
+		var newElem2 = document.createElement('li')
+		var newElem3 = document.createElement('input')
+		var newId = document.createTextNode(listName);
+		newElem.appendChild(newElem2);
+		newElem2.appendChild(newElem3);
+		newElem3.value = listName;
+		newElem3.type = 'submit';
+		newElem.action = '/listsPage/' + listName;
+		//newElem2.appendChild(newId)
+		newElem.id = listName;
+		document.getElementById('lists').appendChild(newElem);
+	}
+}
+
+
+var newAddButton = document.getElementById('addList');
+if(newAddButton) {
+	newAddButton.addEventListener('click', function() {
+		newList();
+	});	
+};
 
 document.getElementById('newCategory').addEventListener('click', function() {
 	addCategory();
