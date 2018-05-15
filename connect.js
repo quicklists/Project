@@ -8,10 +8,10 @@ function connectDB(callback) {
         if(err) {
             console.log(err);
         }
-	    const db = client.db('grocery_list_project')
-	    const collection = db.collection('Users')
+	    var db = client.db('grocery_list_project')
+	    var collection = db.collection('Users')
 
-	    callback(collection, client)
+	    callback(collection, db, client)
 	});
 }
 
@@ -49,32 +49,23 @@ function getCategoryIndex(list, category, data) {
  * @param {string} email the email address
  */
 function readFile(email, callback){
-	connectDB(function(collection, client) {
+	connectDB(function(collection, db, client) {
 		collection.findOne({email: email}, function(err, user) {
 			if(!user) {
-				callback(err, 'failed')
+				callback(err, 'failed');
 			} else {
-				callback(err, user)
+				callback(err, user);
 			}
 			client.close();
 		});
 	});
 }
 
-function updateDB(email,data)
-{
-	MongoClient.connect(url, function(err, client) {
-		if(err) {
-	    	console.log(err);
-		}
-
-	  	const db = client.db('grocery_list_project')
-	  	const collection = db.collection('Users')
-
-	  	collection.replaceOne(email, data);
-
+function updateDB(email,data) {
+	connectDB(function(collection, db, client) {
+		collection.replaceOne(email, data);
 	  	client.close();
-	  });
+	})
 }
 
 /** Deletes a users specified category from the database.
@@ -84,14 +75,14 @@ function updateDB(email,data)
  */
 function deleteCategoryDB(email, list, category) {
     readFile(email, function(err, user) {
-    	var listIndex = getListIndex(list, user)
-    	var categoryIndex = getCategoryIndex(list, category, user)
+    	var listIndex = getListIndex(list, user);
+    	var categoryIndex = getCategoryIndex(list, category, user);
 
     	// fix so it doesnt leave a null
     	delete user.lists[listIndex].categories[categoryIndex];
     	console.log(user.lists[0]);
    		// updateDb(email, user)
-    })
+    });
 }
 
 function addCategoryDB(email, listIndex, categoryName) {
@@ -102,49 +93,38 @@ function addCategoryDB(email, listIndex, categoryName) {
 		console.log(user.lists[0].categories);
 
 		updateDb(email, user)
-	})
+	});
 }
 // tests drop category function
 // dropCategory('nick@123.ca', 'grocery list', 'Produce')
 
 function addUserDB(record, table, callback) {
-    MongoClient.connect(url, function(err, client) {
-        if(err) {
-	    	console.log(err);
-		}
-        const db = client.db('grocery_list_project')
-
-	    db.collection(table).insertOne(record, function(err, res) {
-        if (err){
-            callback("error");
-            throw err;
-        } else {
-    	    console.log("1 document inserted");
-            callback("success");
-        }
-    	});
-        client.close();
-    });
+	connectDB(function(collection, db, client) {
+		db.collection(table).insertOne(record, function(err, res) {
+		    if (err){
+		        callback("error");
+		        throw err;
+		    } else {
+			    console.log("1 document inserted");
+		        callback("success");
+		    }
+		    client.close();
+   		});
+	});
 }
 
-function deleteUserDB(record,table, callback) {
-    MongoClient.connect(url, function(err, client) {
-        if(err) {
-	    	console.log(err);
-		}
-        const db = client.db('grocery_list_project')
-        
+function deleteUserDB(record, table, callback) {
+	connectDB(function(collection, db, client) {
 	    db.collection(table).deleteOne(record, function(err, res) {
-        if (err){
-            callback("error");
-            throw err;
-        } else {
-            console.log("1 document deleted");
-            callback("success");
-    }
-  });
-  client.close();
-    });
+	        if (err){
+	            callback("error");
+	            throw err;
+	        } else {
+	            console.log("1 document deleted");
+	            callback("success");
+  		});
+  		client.close();
+	});
 }
 
 module.exports = {
