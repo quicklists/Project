@@ -1,25 +1,6 @@
 const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://Nick.s:student@ds014388.mlab.com:14388/grocery_list_project'
 
-	/*create: function(data, callback){
-		MongoClient.connect(url, function(err, client) {
-		if(err) {
-	    	console.log(err);
-	  	} else {
-	  		console.log('We are connected to mongodb!');
-	  	}
-	  	//setup for DB
-	  	const db = client.db('grocery_list_project')
-	  	const collection = db.collection('nick')
-	  	if(data.type === "findOne"){
-	  		collection.findOne(data.data)....
-	  		{
-	  			callback(err, user)
-	  			client.close();
-	  		}
-	  	}
-	  })
-	},*/
 function connectDB(callback) {
 	MongoClient.connect(url, function(err, client) {
         if(err) {
@@ -66,9 +47,7 @@ function readFile(email, callback){
 	});
 }
 
-
-
-function updateDb(email,data)
+function updateDB(email,data)
 {
 	MongoClient.connect(url, function(err, client) {
 		if(err) {
@@ -82,10 +61,9 @@ function updateDb(email,data)
 
 	  	client.close();
 	  });
-
 }
 
-function dropCategory(email, list, category) {
+function deleteCategoryDB(email, list, category) {
     readFile(email, function(err, user) {
     	var listIndex = getListIndex(list, user)
     	var categoryIndex = getCategoryIndex(list, category, user)
@@ -96,10 +74,21 @@ function dropCategory(email, list, category) {
    		// updateDb(email, user)
     })
 }
+
+function addCategoryDB(email, listIndex, categoryName) {
+	readFile(email, function(err, user) {
+		var categoryObj = {"name": categoryName, "items": [] };
+
+		user.lists[listIndex].categories.push(categoryObj);
+		console.log(user.lists[0].categories);
+
+		updateDb(email, user)
+	})
+}
 // tests drop category function
 // dropCategory('nick@123.ca', 'grocery list', 'Produce')
 
-function addRecord(record, table, callback) {
+function addUserDB(record, table, callback) {
     MongoClient.connect(url, function(err, client) {
         if(err) {
 	    	console.log(err);
@@ -117,8 +106,9 @@ function addRecord(record, table, callback) {
     	});
         client.close();
     });
-}   
-function deleteRecord(record,table, callback) {
+}
+
+function deleteUserDB(record,table, callback) {
     MongoClient.connect(url, function(err, client) {
         if(err) {
 	    	console.log(err);
@@ -140,10 +130,11 @@ function deleteRecord(record,table, callback) {
 
 module.exports = {
 	readFile,
-	addRecord,
-	updateDb,
-    deleteRecord,
-	dropCategory
+	addUserDB,
+	updateDB,
+    deleteUserDB,
+    deleteCategoryDB,
+    addCategoryDB
 }
 
 // henrys unittest example to me (nick)
@@ -159,4 +150,3 @@ module.exports = {
 // 		done();
 // 	})
 // })
-
