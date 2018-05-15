@@ -4,7 +4,7 @@
   "description": "Create and edit a shopping list.",
   "main": "index.js",
   "scripts": {
-    "test": "jest test.js",
+    "test": "jest --coverage test.js",
     "start": "node server.js"
   },
   "author": "Nick Skelin",
