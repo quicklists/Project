@@ -78,8 +78,9 @@ function updateDB(email, data) {
  * @param {string} email The email address
  * @param {string} list The list you are deleting a category from
  * @param {string} category The category you wish to delete
+ * @param {callback} callback Sends a callback
  */
-function deleteCategoryDB(email, list, category) {
+function deleteCategoryDB(email, list, category, callback) {
     readFile(email, function(err, user) {
     	var listIndex = getListIndex(list, user);
     	var categoryIndex = getCategoryIndex(list, category, user);
@@ -88,6 +89,8 @@ function deleteCategoryDB(email, list, category) {
     	delete user.lists[listIndex].categories[categoryIndex];
     	console.log(user.lists[0]);
    		// updateDb(email, user)
+
+   		callback('success')
     });
 }
 

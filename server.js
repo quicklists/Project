@@ -7,15 +7,14 @@ const hbs = require('hbs');
 /** File Share module */
 const fs = require('fs');
 
-const dbf = require('./database_functions.js');
-
 /** localhost test port */
 const port = process.env.PORT || 8080;
 
 var app = express();
 
 var session = require('client-sessions');
-var getDB = require("./connect");
+var getDB = require('./connect.js');
+var extra = require('./functions.js')
 // handlebars setup
 app.set('view engine', 'hbs');
 hbs.registerPartials(__dirname + '/views/partials');
@@ -43,26 +42,10 @@ app.use(session({
  * @param {string} password The users password
  * @param {callback} callback Sends a callback 
  */
-function login(email, password, callback) {
-    if (email.indexOf('@') > 0 && email.indexOf('.') > 0 && (email.indexOf('com') > 0 || email.indexOf('ca') > 0)) {
-        getDB.readFile(email, (err, user) => {
-            if(user === 'failed') {
-                callback(err, 'failed')
-            } else {
-                if (password === user.password) {
-                    callback(err, user)
-                } else {
-                    callback(err, 'failed')
-                }
-            }
-        }); 
-    } else {
-        callback('failed')
-    }
-}
+
 
 app.post('/login', function(req, res) {
-    login(req.body.email, req.body.password, (err, user) => {
+    extra.login(req.body.email, req.body.password, (err, user) => {
         if (user === 'failed') {
             res.render('login.hbs', {
                 error: 'Wrong email or password'
