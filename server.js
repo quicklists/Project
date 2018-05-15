@@ -35,15 +35,6 @@ app.use(session({
     activeDuration: 2 * 60 * 1000
 }));
 
-/**
- * Checks the email for proper format, if this passes if checks to see if the email is in the database.
- * If this also passes it checks that the users password matchs the databases password.
- * @param {string} email the users email address
- * @param {string} password The users password
- * @param {callback} callback Sends a callback 
- */
-
-
 app.post('/login', function(req, res) {
     extra.login(req.body.email, req.body.password, (err, user) => {
         if (user === 'failed') {

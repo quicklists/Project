@@ -1,5 +1,6 @@
 const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://Nick.s:student@ds014388.mlab.com:14388/grocery_list_project'
+var fun = require('./functions.js')
 
 /** Connects to our mongo database and returns an active client and collection.
  * @param {callback} callback Sends a callback
@@ -21,13 +22,13 @@ function connectDB(callback) {
  * @param {JSON} data The users JSON file from the database.
  */
 function getListIndex(list, data) {
-	var lists = data.lists
+    var lists = data.lists
 
     for (var i = 0; i < lists.length; i++) {
-		if (lists[i].name === list) {
-			return i
-		}
-	}
+        if (lists[i].name === list) {
+            return i
+        }
+    }
 }
 
 /** Finds the category's index number in the data file and returns it.
@@ -36,14 +37,14 @@ function getListIndex(list, data) {
  * @param {JSON} data The users JSON file from the database.
  */
 function getCategoryIndex(list, category, data) {
-	var listIndex = getListIndex(list, data)
+    var listIndex = getListIndex(list, data)
     var categories = data.lists[listIndex].categories
 
-	for(var i = 0; i < categories.length; i++) {
-	    if (categories[i].name === category) {
-	    	return i
-	    }
-	}
+    for(var i = 0; i < categories.length; i++) {
+        if (categories[i].name === category) {
+            return i
+        }
+    }
 }
 
 /** Finds the file associated with the email and returns it if it exists. If it does not exist it return the string 'failed'
@@ -94,6 +95,11 @@ function deleteCategoryDB(email, list, category, callback) {
     });
 }
 
+// tests drop category function
+// deleteCategoryDB('nick@123.ca', 'grocery list', 'Produce', (msg) => {
+// 	console.log(msg)
+// })
+
 /** Adds a category to the specified list and saves it to database
  * @param {string} email The email address
  * @param {int} listIndex The index number for the list you are editing
@@ -109,8 +115,6 @@ function addCategoryDB(email, listIndex, categoryName) {
 		updateDb(email, user)
 	});
 }
-// tests drop category function
-// dropCategory('nick@123.ca', 'grocery list', 'Produce')
 
 /** Adds a new user document to the database and returns a callback either 'error' or 'success'
  * @param {JSON} record The new users data to add to the database
@@ -153,6 +157,7 @@ function deleteUserDB(record, table, callback) {
 }
 
 module.exports = {
+	getListIndex,
 	readFile,
 	addUserDB,
 	updateDB,
