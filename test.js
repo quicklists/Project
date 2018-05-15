@@ -37,16 +37,16 @@ var obj = {
     ]
 };
 
-describe("addRecord function testing", ()=>{
-    test("added product to a list", ()=>{
+describe("addUserDB function testing", ()=>{
+    test("added user to db", ()=>{
         myDB.addUserDB(obj, "Users", function(msg){
             expect(msg).toBe("success");
         });
     });
 });
 
-describe.skip("deleteRecord function testing", ()=>{
-    test("deleted product from a list", ()=>{
+describe.skip("deleteUserDB function testing", ()=>{
+    test("deleted user from db", ()=>{
         myDB.deleteUserDB(obj, "Users", function(msg){
             expect(msg).toBe("success");
         });
