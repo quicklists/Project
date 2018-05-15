@@ -37,12 +37,11 @@ app.use(session({
 }));
 
 /**
- * @login
- * Checks database for the account, if it exists it moves to 'homePage.hbs'. if it does not it renders 'login.hbs' with a error message
- * @param {string} Email
- * @param {string} Password 
- * Sets username and password
- * gets and renders the home.hbs file
+ * Checks the email for proper format, if this passes if checks to see if the email is in the database.
+ * If this also passes it checks that the users password matchs the databases password.
+ * @param {string} email the users email address
+ * @param {string} password The users password
+ * @param {callback} callback Sends a callback 
  */
 function login(email, password, callback) {
     if (email.indexOf('@') > 0 && email.indexOf('.') > 0 && (email.indexOf('com') > 0 || email.indexOf('ca') > 0)) {
