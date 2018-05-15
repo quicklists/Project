@@ -1,4 +1,5 @@
-var myDB = require("./connect.js");
+var myDB = require("./connect");
+var server = require("./server.js")
 var obj = {
    
     "username": "brendon1",
@@ -62,15 +63,15 @@ describe.skip("dropCategory function testing", () => {
 
 describe.skip("login validation testing.", () => {
     test("email should be proper email format.", () => {
-        extra.login('nick123.com', '123', (user) => {
+        server.login('nick123.com', '123', (user) => {
             expect(user).toBe('failed');
         });
 
-        extra.login('nick@123', '123', (user) => {
+        server.login('nick@123', '123', (user) => {
             expect(user).toBe('failed');
         });
 
-        extra.login('nick@123com', '123', (user) => {
+        server.login('nick@123com', '123', (user) => {
             expect(user).toBe('failed');
         });
     });
@@ -78,6 +79,6 @@ describe.skip("login validation testing.", () => {
 
 describe.skip("getListIndex testing", () => {
     test("should return a number", () => {
-        expect(myDB.getListIndex('grocery list', obj).tobe(0))
+        expect(myDB.getListIndex('grocery list', obj)).toBe(0);
     })
 })
