@@ -32,6 +32,27 @@ function connectDB(callback) {
 	});
 }
 
+function getListIndex(list, data) {
+	var lists = data.lists
+
+    for (var i = 0; i < lists.length; i++) {
+		if (lists[i].name === list) {
+			return i
+		}
+	}
+}
+
+function getCategoryIndex(list, category, data) {
+	var listIndex = getListIndex(list, data)
+    var categories = data.lists[listIndex].categories
+
+	for(var i = 0; i < categories.length; i++) {
+	    if (categories[i].name === category) {
+	    	return i
+	    }
+	}
+}
+
 function readFile(email, callback){
 	connectDB(function(collection, client) {
 		collection.findOne({email: email}, function(err, user) {
@@ -63,12 +84,20 @@ function updateDb(email,data)
 	  });
 
 }
-function dropCategory(email, listIndex, categoryIndex) {
+
+function dropCategory(email, list, category) {
     readFile(email, function(err, user) {
+    	var listIndex = getListIndex(list, user)
+    	var categoryIndex = getCategoryIndex(list, category, user)
+
+    	// fix so it doesnt leave a null
     	delete user.lists[listIndex].categories[categoryIndex];
-   		updateDb(email, user)
+    	console.log(user.lists[0]);
+   		// updateDb(email, user)
     })
 }
+// tests drop category function
+// dropCategory('nick@123.ca', 'grocery list', 'Produce')
 
 function addRecord(record, table, callback) {
     MongoClient.connect(url, function(err, client) {

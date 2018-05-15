@@ -133,10 +133,18 @@ app.get('/listsPage/:listname', function(req, res) {
     }
 });
 
-app.post('/add-new-item', function(req, res) {
+app.post('/addItem', function(req, res) {
     console.log(req.body)
     res.send('ok')
 });
+
+app.post('/deleteItem', function(req, res) {
+    var email = req.session.user.email
+    var list = req.session.user.currentList
+    var category = req.body.category
+    getDB.dropCategory(email, list, category)
+    res.send('ok')
+})
 
 /** User input what grocery items they want and then click a button. 
 The webpage then requests information from the database, which then response by sending that information back to the webpage. 
@@ -148,22 +156,13 @@ Next, the requested information is displayed on the webpage.
  */
 app.get('/groceryListPage', function(req, res) {
     if(req.session && req.session.user) {
+        req.session.user.currentList = req.session.user.lists[0].name
         res.render('grocerylist.hbs', {
             lists: req.session.user.lists
         });
     } else {
         res.redirect('/');
     }
-});
-
-/**
- * respond with "ok" when a GET request is made to the add new item
- * @name add new item
- * @function
- */
-app.post('/add-new-item', function(req, res) {
-    console.log(req.body)
-    res.send('ok')
 });
 
 /*

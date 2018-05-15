@@ -78,7 +78,7 @@ describe("list names testing", ()=>{
 // nick - Tests the refactored login function for proper email format
 var server = require('./server.js')
 
-describe("login validation testing.", () => {
+describe.only("login validation testing.", () => {
     test("email should be proper email format.", () => {
         server.login('nick123.com', '123', (user) => {
             expect(user).toBe('failed');
