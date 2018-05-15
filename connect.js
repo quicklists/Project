@@ -64,8 +64,8 @@ function readFile(email, callback){
 }
 
 /** replaces the old database document with a new one.
- * @param {} email -- desc --
- * @param {} data -- desc --
+ * @param {string} email The email address
+ * @param {JSON} data The data to be uploaded to the database
  */
 function updateDB(email, data) {
 	connectDB(function(collection, db, client) {
@@ -110,8 +110,8 @@ function addCategoryDB(email, listIndex, categoryName) {
 // dropCategory('nick@123.ca', 'grocery list', 'Produce')
 
 /** Adds a new user document to the database and returns a callback either 'error' or 'success'
- * @param {} record --desc--
- * @param {} table --desc--
+ * @param {JSON} record The new users data to add to the database
+ * @param {string} table the collection name
  * @param {callback} callback Sends a callback
  */
 function addUserDB(record, table, callback) {
@@ -130,8 +130,8 @@ function addUserDB(record, table, callback) {
 }
 
 /** Deletes a user document from the database and returns a callback with either 'error' or '1 document deleted'
- * @param {} record -- desc --
- * @param {} table -- desc --
+ * @param {json} record the users data to be deleted from the database
+ * @param {string} table the collection name
  * @param {callback} callback Sends a callback
  */
 function deleteUserDB(record, table, callback) {
