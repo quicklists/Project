@@ -36,7 +36,7 @@ var obj = {
     ]
 };
 
-describe.skip"addRecord function testing", ()=>{
+describe.skip("addRecord function testing", ()=>{
     test("added product to a list", ()=>{
         myDB.addUserDB(obj, "Users", function(msg){
             expect(msg).toBe("success");
@@ -75,3 +75,9 @@ describe.skip("login validation testing.", () => {
         });
     });
 });
+
+describe.skip("getListIndex testing", () => {
+    test("should return a number", () => {
+        expect(myDB.getListIndex('grocery list', obj).tobe(0))
+    })
+})
