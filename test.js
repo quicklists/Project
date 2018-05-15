@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 var myDB = require("./connect");
 var server = require("./server.js")
+=======
+var myDB = require("./connect.js");
+>>>>>>> upstream/master
 var obj = {
    
     "username": "brendon1",
