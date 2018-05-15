@@ -1,6 +1,8 @@
 const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://Nick.s:student@ds014388.mlab.com:14388/grocery_list_project'
 
+/** Connects to our mongo database and returns an active client and collection.
+ */
 function connectDB(callback) {
 	MongoClient.connect(url, function(err, client) {
         if(err) {
@@ -13,6 +15,10 @@ function connectDB(callback) {
 	});
 }
 
+/** Finds the list's index number in the data file and returns it.
+ * @param {string} list Name of the list
+ * @param {JSON} data The users JSON file from the database.
+ */
 function getListIndex(list, data) {
 	var lists = data.lists
 
@@ -23,6 +29,11 @@ function getListIndex(list, data) {
 	}
 }
 
+/** Finds the category's index number in the data file and returns it.
+ * @param {string} list Name of the list
+ * @param {string} category Name of the category
+ * @param {JSON} data The users JSON file from the database.
+ */
 function getCategoryIndex(list, category, data) {
 	var listIndex = getListIndex(list, data)
     var categories = data.lists[listIndex].categories
@@ -34,6 +45,9 @@ function getCategoryIndex(list, category, data) {
 	}
 }
 
+/** Finds the file associated with the email and returns it if it exists. If it does not exist it return the string 'failed'
+ * @param {string} email the email address
+ */
 function readFile(email, callback){
 	connectDB(function(collection, client) {
 		collection.findOne({email: email}, function(err, user) {
@@ -63,6 +77,11 @@ function updateDB(email,data)
 	  });
 }
 
+/** Deletes a users specified category from the database.
+ * @param {string} email The email address
+ * @param {string} list The list you are deleting a category from
+ * @param {string} category The category you wish to delete
+ */
 function deleteCategoryDB(email, list, category) {
     readFile(email, function(err, user) {
     	var listIndex = getListIndex(list, user)
