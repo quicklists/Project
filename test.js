@@ -58,7 +58,7 @@ var myDB = require("./connect");
 
 var obj = {
    
-    "username": "brendon",
+    "username": "brendon1",
     "email": "brendon@1234",
     "password": "1234",
     "lists": [
@@ -93,7 +93,7 @@ var obj = {
     ]
 };
 
-describe.only("addRecord function testing", ()=>{
+describe.skip("addRecord function testing", ()=>{
     test("added product to a list", ()=>{
         myDB.addRecord(obj,"Users", function(msg){
             expect(msg).toBe("success");
@@ -103,5 +103,5 @@ describe.only("addRecord function testing", ()=>{
     });
     
 });
-    
-        
+
+

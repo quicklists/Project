@@ -76,11 +76,13 @@ function addRecord(record,table, callback){
     	});
         client.close();
     });
-}   
+} 
+
+      
 
 module.exports = {
 	readFile,
 	addRecord,
 	createTable
+    
 }
-
