@@ -124,43 +124,6 @@ function addCategoryDB(email, listIndex, categoryName) {
 	});
 }
 
-//     readFile(email, function(err, user) {
-    	
-//     	delete user.lists[listIndex].categories[categoryIndex];
-    	
-//    		updateDb(email, user)
-
-//     })
-
-// }
-
-function addRecord(record,table, callback){
-    MongoClient.connect(url, function(err, client) {
-        if(err) {
-	    	console.log(err);
-		}
-        const db = client.db('grocery_list_project')
-
-	    db.collection(table).insertOne(record, function(err, res) {
-        if (err){
-            callback("error");
-            throw err;
-        } else {
-    	    console.log("1 document inserted");
-            callback("success");
-        }
-    	});
-        client.close();
-    });
-}   
-function deleteRecord(record,table, callback){
-    MongoClient.connect(url, function(err, client) {
-        if(err) {
-	    	console.log(err);
-		}
-        const db = client.db('grocery_list_project')
-        
-
 /** Adds a new user document to the database and returns a callback either 'error' or 'success'
  * @param {JSON} record The new users data to add to the database
  * @param {string} table the collection name
@@ -206,9 +169,7 @@ module.exports = {
 	getListIndex,
 	getCategoryIndex,
 	readFile,
-	addRecord,
 	updateDb,
-    deleteRecord,
 	dropCategory,
 	addUserDB,
 	updateDB,
