@@ -1,7 +1,5 @@
-
 var myDB = require("./connect");
 // var server = require("./server.js")
-
 var obj = {
    
     "username": "brendon1",
@@ -47,15 +45,12 @@ describe("addRecord function testing", ()=>{
     });
 });
 
-
 describe.skip("deleteRecord function testing", ()=>{
-
     test("deleted product from a list", ()=>{
         myDB.deleteUserDB(obj, "Users", function(msg){
             expect(msg).toBe("success");
         });
     });
-
 });
 
 describe("dropCategory function testing", () => {
@@ -85,5 +80,25 @@ describe.skip("login validation testing.", () => {
 describe("getListIndex testing", () => {
     test("should return a number", () => {
         expect(myDB.getListIndex('grocery list', obj)).toBe(0);
-    })
-})
+    });
+});
+
+describe("getCategoryIndex testing", () => {
+    test("should return a number", () => {
+        expect(myDB.getCategoryIndex('grocery list', 'Vegetables', obj)).toBe(1);
+    });
+});
+
+describe("readFile testing", () => {
+    test("should return an error message", () => {
+        myDB.readFile('nick@1a', (err, user) => {
+            expect(user).toBe('failed')
+        });
+    });
+
+    test("Should return a file with the same email inputted", () => {
+        myDB.readFile('nick@123.ca', (err, user) => {
+            expect(user.email).toBe('nick@123.ca')
+        })
+    });
+});
