@@ -2,9 +2,9 @@ var myDB = require("./connect");
 // var server = require("./server.js")
 var obj = {
    
-    "username": "brendon1",
-    "email": "brendon@1234",
-    "password": "1234",
+    "username": "tester",
+    "email": "test@1.ca",
+    "password": "1",
     "lists": [
         {
             "name": "grocery list",
@@ -45,17 +45,9 @@ describe("addRecord function testing", ()=>{
     });
 });
 
-describe.skip("deleteRecord function testing", ()=>{
-    test("deleted product from a list", ()=>{
-        myDB.deleteUserDB(obj, "Users", function(msg){
-            expect(msg).toBe("success");
-        });
-    });
-});
-
-describe("dropCategory function testing", () => {
+describe("deleteCategoryDB function testing", () => {
     test("delete category inside list", () => {
-        myDB.deleteCategoryDB('nick@123.ca', 'grocery list', 'Produce', (msg) => {
+        myDB.deleteCategoryDB('test@1.ca', 'grocery list', 'Produce', (msg) => {
             expect(msg).toBe("success");
         });
     });
@@ -100,5 +92,21 @@ describe("readFile testing", () => {
         myDB.readFile('nick@123.ca', (err, user) => {
             expect(user.email).toBe('nick@123.ca')
         })
+    });
+});
+
+describe("deleteListDB testing", () => {
+    test("Should return 'success'", () => {
+        myDB.deleteListDB('test@1.ca', 'grocery list', (msg) => {
+            expect(msg).toBe('success')
+        });
+    });
+});
+
+describe("deleteRecord function testing", ()=>{
+    test("deleted product from a list", ()=>{
+        myDB.deleteUserDB(obj, "Users", function(msg){
+            expect(msg).toBe("success");
+        });
     });
 });

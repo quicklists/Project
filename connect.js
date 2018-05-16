@@ -82,13 +82,17 @@ function updateDB(email, data) {
  */
 function deleteCategoryDB(email, list, category, callback) {
     readFile(email, function(err, user) {
-    	var listIndex = getListIndex(list, user);
-    	var categoryIndex = getCategoryIndex(list, category, user);
+    	if (err) {
+    		console.log(err)
+    	} else {
+	    	var listIndex = getListIndex(list, user);
+	    	var categoryIndex = getCategoryIndex(list, category, user);
 
-    	user.lists[listIndex].categories.splice(categoryIndex,1);
-   		updateDB(email, user)
+	    	user.lists[listIndex].categories.splice(categoryIndex,1);
+	   		updateDB(email, user)
 
-   		callback('success')
+	   		callback('success')
+    	}
     });
 }
 
@@ -139,11 +143,10 @@ function deleteUserDB(record, table, callback) {
 	            callback("error");
 	            throw err;
 	        } else {
-	            console.log("1 document deleted");
 	            callback("success");
 	        }
+	        client.close();
   		});
-  		client.close();
 	});
 }
 
@@ -162,11 +165,12 @@ function addListDB(email, list) {
  * @param {string} email The users email address
  * @param {string} list The name of the list to be deleted
  */
-function deleteListDB(email, list) {
+function deleteListDB(email, list, callback) {
 	readFile(email, (err, user) => {
 		listIndex = getListIndex(list, user)
 		user.lists.splice(listIndex)
 		updateDB(email, user)
+		callback('success')
 	})
 }
 
