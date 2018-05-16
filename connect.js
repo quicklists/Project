@@ -7,12 +7,12 @@ const url = 'mongodb://Nick.s:student@ds014388.mlab.com:14388/grocery_list_proje
 function connectDB(callback) {
 	MongoClient.connect(url, function(err, client) {
         if(err) {
-            console.log(err);
+            throw err;
+        } else {
+        	var db = client.db('grocery_list_project')
+		    var collection = db.collection('Users')
+		    callback(collection, db, client)
         }
-	    var db = client.db('grocery_list_project')
-	    var collection = db.collection('Users')
-
-	    callback(collection, db, client)
 	});
 }
 
@@ -53,10 +53,12 @@ function getCategoryIndex(list, category, data) {
 function readFile(email, callback){
 	connectDB(function(collection, db, client) {
 		collection.findOne({email: email}, function(err, user) {
-			if(!user) {
-				callback(err, 'failed');
+			if (err) {
+				throw err;
+			} else if (!user) {
+				callback('failed');
 			} else {
-				callback(err, user);
+				callback(user);
 			}
 			client.close();
 		});
@@ -68,7 +70,7 @@ function readFile(email, callback){
  * @param {JSON} data The data to be uploaded to the database
  */
 function updateDB(email, data) {
-	connectDB(function(collection, db, client) {
+	connectDB((collection, db, client) => {
 		collection.replaceOne(email, data);
 	  	client.close();
 	})
@@ -81,18 +83,14 @@ function updateDB(email, data) {
  * @param {callback} callback Sends a callback
  */
 function deleteCategoryDB(email, list, category, callback) {
-    readFile(email, function(err, user) {
-    	if (err) {
-    		console.log(err)
-    	} else {
-	    	var listIndex = getListIndex(list, user);
-	    	var categoryIndex = getCategoryIndex(list, category, user);
+    readFile(email, (user) => {
+    	var listIndex = getListIndex(list, user);
+    	var categoryIndex = getCategoryIndex(list, category, user);
 
-	    	user.lists[listIndex].categories.splice(categoryIndex,1);
-	   		updateDB(email, user)
+    	user.lists[listIndex].categories.splice(categoryIndex,1);
+   		updateDB(email, user)
 
-	   		callback('success')
-    	}
+   		callback('success')
     });
 }
 
@@ -102,7 +100,7 @@ function deleteCategoryDB(email, list, category, callback) {
  * @param {string} categoryName The name for the category you want to add
  */
 function addCategoryDB(email, listIndex, categoryName) {
-	readFile(email, function(err, user) {
+	readFile(email, (user) => {
 		var categoryObj = {"name": categoryName, "items": [] };
 
 		user.lists[listIndex].categories.push(categoryObj);
@@ -155,7 +153,7 @@ function deleteUserDB(record, table, callback) {
  * @param {string} list The new lists name
  */
 function addListDB(email, list) {
-	readFile(email, (err, user) => {
+	readFile(email, (user) => {
 		user.lists.push({name: list})
 		updateDB(email, user)
 	})
@@ -166,7 +164,7 @@ function addListDB(email, list) {
  * @param {string} list The name of the list to be deleted
  */
 function deleteListDB(email, list, callback) {
-	readFile(email, (err, user) => {
+	readFile(email, (user) => {
 		listIndex = getListIndex(list, user)
 		user.lists.splice(listIndex)
 		updateDB(email, user)

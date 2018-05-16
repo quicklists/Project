@@ -83,13 +83,13 @@ describe("getCategoryIndex testing", () => {
 
 describe("readFile testing", () => {
     test("should return an error message", () => {
-        myDB.readFile('nick@1a', (err, user) => {
+        myDB.readFile('nick@1a', (user) => {
             expect(user).toBe('failed')
         });
     });
 
     test("Should return a file with the same email inputted", () => {
-        myDB.readFile('nick@123.ca', (err, user) => {
+        myDB.readFile('nick@123.ca', (user) => {
             expect(user.email).toBe('nick@123.ca')
         })
     });
