@@ -111,7 +111,7 @@ function addCategoryDB(email, listIndex, categoryName) {
 		user.lists[listIndex].categories.push(categoryObj);
 		console.log(user.lists[0].categories);
 
-		updateDb(email, user)
+		updateDB(email, user)
 	});
 }
 
@@ -153,6 +153,21 @@ function deleteUserDB(record, table, callback) {
   		});
   		client.close();
 	});
+}
+
+function addListDB(email, list) {
+	readFile(email, (err, user) => {
+		user.lists.push({name: list})
+		updateDB(email, user)
+	})
+}
+
+function deleteListDB(email, list) {
+	readFile(email, (err, user) => {
+		listIndex = getListIndex(list, user)
+		user.lists.splice(listIndex)
+		updateDB(email, user)
+	})
 }
 
 module.exports = {
