@@ -86,7 +86,7 @@ function deleteCategoryDB(email, list, category, callback) {
     	var categoryIndex = getCategoryIndex(list, category, user);
 
     	user.lists[listIndex].categories.splice(categoryIndex,1);
-   		updateDb(email, user)
+   		updateDB(email, user)
 
    		callback('success')
     });
@@ -120,7 +120,6 @@ function addUserDB(record, table, callback) {
 		        callback("error");
 		        throw err;
 		    } else {
-			    console.log("1 document inserted");
 		        callback("success");
 		    }
 		    client.close();
