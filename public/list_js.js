@@ -101,26 +101,22 @@ function addItem() {
 			xhr.open('POST', '/addItem');
 			xhr.setRequestHeader('Content-Type', 'application/json');
 			xhr.onload = function() {
-		    if (xhr.status === 200) {
-			    var newElem = document.createElement('LI');
-				var newId = document.createTextNode(itemName)
+			    if (xhr.status === 200) {
+				    var newElem = document.createElement('LI');
+					var newId = document.createTextNode(itemName)
 
-				newElem.id = itemName
-				document.getElementById(categoryName).appendChild(newElem)
+					newElem.id = itemName
+					document.getElementById(categoryName).appendChild(newElem)
 
-				newElem.appendChild(newId)
-
-		    }
-		    else {
-		        console.log('Error, not saved on the server');
-		    }
-		};
-
+					newElem.appendChild(newId)
+			    } else {
+			        alert('Error, not saved on the server');
+			    }
+			};
 	    	xhr.send(JSON.stringify({
 			    item: itemName,
 			    category: categoryName
 			}));
-
 		} else {
 			alert('Cant add item!')
 		}
@@ -131,12 +127,26 @@ function addItem() {
  * This function delete a specific Category
  */
 function delItem() {
+	var categoryName = document.getElementById('chooseCategory').value
 	var itemName = document.getElementById('chooseItem').value
 	var myItem = document.getElementById(itemName)
 	if (myItem === null) {
 		alert('Item does not exist!')
 	} else { 
-		myItem.parentNode.removeChild(myItem);
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', '/deleteItem');
+		xhr.setRequestHeader('Content-Type', 'application/json');
+		xhr.onload = function() {
+		    if (xhr.status === 200) {
+				myItem.parentNode.removeChild(myItem);
+		    } else {
+		        alert('Error, not saved on the server');
+		    }
+		}
+    	xhr.send(JSON.stringify({
+		    item: itemName,
+		    category: categoryName
+		}));
 	}
 }
 

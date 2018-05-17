@@ -128,8 +128,27 @@ app.post('/deleteCategory', (req, res) => {
 });
 
 app.post('/addItem', (req, res) => {
-    console.log(req.body)
-    res.send('ok')
+    var email = req.session.user.email
+    var list = req.session.user.currentList
+    var category = req.body.category
+    var item = req.body.item
+    getDB.addItemDB(email, list, category, item, (msg) => {
+        if (msg === 'success') {
+            res.send('ok');
+        }
+    });
+});
+
+app.post('/deleteItem', (req, res) => {
+    var email = req.session.user.email
+    var list = req.session.user.currentList
+    var category = req.body.category
+    var item = req.body.item
+    getDB.deleteItemDB(email, list, category, item, (msg) => {
+        if (msg === 'success') {
+            res.send('ok');
+        }
+    });
 });
 
 /** User input what grocery items they want and then click a button. 
