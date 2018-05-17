@@ -164,6 +164,27 @@ function deleteUserDB(record, table, callback) {
   		client.close();
 	});
 }
+function addItemDB(email, list, category, item, callback) {
+
+	readFile(email, (user) => {
+
+		var listIndex = getListIndex(list, user);
+
+		var categoryIndex = getCategoryIndex(list, category, user);
+
+
+
+		user.lists[listIndex].categories[categoryIndex].items.push(item)
+
+		updateDB(email, user);
+
+
+
+		callback('success');
+
+	});
+
+}
 
 module.exports = {
 	getListIndex,
@@ -175,7 +196,8 @@ module.exports = {
 	updateDB,
     deleteUserDB,
     deleteCategoryDB,
-    addCategoryDB
+    addCategoryDB,
+    addItemDB
 }
 
 
