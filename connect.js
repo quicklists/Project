@@ -342,6 +342,7 @@ module.exports = {
     addCategoryDB,
     addItemDB,
     addListDB,
+    deleteItemDB,
     deleteListDB
 
 }
@@ -364,12 +365,5 @@ module.exports = {
 // 	})
 // })
 
-=======
-    addListDB,
-    deleteListDB,
-    addCategoryDB,
-    deleteCategoryDB,
-    addItemDB,
-    deleteItemDB
-}
->>>>>>> upstream/master
+
+
