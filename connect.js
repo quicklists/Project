@@ -241,7 +241,6 @@ module.exports = {
 	getListIndex,
 	getCategoryIndex,
 	readFile,
-	dropCategory,
 	addUserDB,
 	updateDB,
     deleteUserDB,
