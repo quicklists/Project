@@ -99,53 +99,6 @@ function updateDB(email, data) {
 	});
 }
 
-/** Adds a new list to a users file and saves it to the database 
- * @param {string} email The users email address
- * @param {string} list The new lists name
- */
-function addListDB(email, list) {
-	readFile(email, (err, user) => {
-		user.lists.push({name: list})
-		updateDB(email, user)
-	})
-}
-
-/** Deletes a users specified category from the database.
- * @param {string} email The email address
- * @param {string} list The list you are deleting a category from
- * @param {string} category The category you wish to delete
- * @param {callback} callback Sends a callback
- */
-function deleteCategoryDB(email, list, category, callback) {
-    readFile(email, (user) => {
-    	var listIndex = getListIndex(list, user);
-    	var categoryIndex = getCategoryIndex(list, category, user);
-
-    	user.lists[listIndex].categories.splice(categoryIndex,1);
-   		updateDB(email, user)
-
-   		callback('success')
-    });
-}
-
-/** Adds a category to the specified list and saves it to database
- * @param {string} email The email address
- * @param {int} listIndex The index number for the list you are editing
- * @param {string} categoryName The name for the category you want to add
- */
-function addCategoryDB(email, list, category, callback) {
-	readFile(email, (user) => {
-		var listIndex = getListIndex(list, user)
-		var categoryObj = {"name": category, "items": [] };
-
-		user.lists[listIndex].categories.push(categoryObj);
-		updateDB(email, user)
-
-		callback('success')
-	});
-}
-
-
 /** Adds a new user document to the database and returns a callback either 'error' or 'success'
  * @param {JSON} record The new users data to add to the database
  * @param {string} table the collection name
@@ -189,7 +142,7 @@ function deleteUserDB(record, table, callback) {
  * @param {string} list The new lists name
  */
 function addListDB(email, list) {
-	readFile(email, (user) => {
+	readFile(email, (err, user) => {
 		user.lists.push({name: list})
 		updateDB(email, user)
 	})
@@ -206,6 +159,41 @@ function deleteListDB(email, list, callback) {
 		updateDB(email, user)
 		callback('success')
 	})
+}
+
+/** Adds a category to the specified list and saves it to database
+ * @param {string} email The email address
+ * @param {int} listIndex The index number for the list you are editing
+ * @param {string} categoryName The name for the category you want to add
+ */
+function addCategoryDB(email, list, category, callback) {
+	readFile(email, (user) => {
+		var listIndex = getListIndex(list, user)
+		var categoryObj = {"name": category, "items": [] };
+
+		user.lists[listIndex].categories.push(categoryObj);
+		updateDB(email, user)
+
+		callback('success')
+	});
+}
+
+/** Deletes a users specified category from the database.
+ * @param {string} email The email address
+ * @param {string} list The list you are deleting a category from
+ * @param {string} category The category you wish to delete
+ * @param {callback} callback Sends a callback
+ */
+function deleteCategoryDB(email, list, category, callback) {
+    readFile(email, (user) => {
+    	var listIndex = getListIndex(list, user);
+    	var categoryIndex = getCategoryIndex(list, category, user);
+
+    	user.lists[listIndex].categories.splice(categoryIndex,1);
+   		updateDB(email, user)
+
+   		callback('success')
+    });
 }
 
 module.exports = {
