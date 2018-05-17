@@ -69,6 +69,23 @@ function getCategoryIndex(list, category, data) {
     }
 }
 
+/** Finds the category's index number in the data file and returns it.
+ * @param {string} list Name of the list
+ * @param {string} category Name of the category
+ * @param {JSON} data The users JSON file from the database.
+ */
+function getItemIndex(list, category, item, data) {
+    var listIndex = getListIndex(list, data)
+    var categoryIndex= getCategoryIndex(list, category, data)
+    var itemList = data.lists[listIndex].categories[categoryIndex].items
+
+    for(var i = 0; i < itemList.length; i++) {
+        if (itemList[i] === item) {
+            return i
+        }
+    }
+}
+
 /** Finds the file associated with the email and returns it if it exists. If it does not exist it return the string 'failed'
  * @param {string} email the email address
  * @param {callback} callback Sends a callback
@@ -190,36 +207,65 @@ function deleteCategoryDB(email, list, category, callback) {
     	var categoryIndex = getCategoryIndex(list, category, user);
 
     	user.lists[listIndex].categories.splice(categoryIndex,1);
-   		updateDB(email, user)
+   		updateDB(email, user);
 
-   		callback('success')
+   		callback('success');
     });
+}
+
+/** adds an item to a users list under a category and saves it to the database
+ * @param {string} email The users email address
+ * @param {string} list The list to be edited
+ * @param {string} category The category the item will be added under
+ * @param {string} item The item to be added
+ * @param {callback} callback Sends a callback
+ */
+function addItemDB(email, list, category, item, callback) {
+	readFile(email, (user) => {
+		var listIndex = getListIndex(list, user);
+		var categoryIndex = getCategoryIndex(list, category, user);
+
+		user.lists[listIndex].categories[categoryIndex].items.push(item)
+		updateDB(email, user);
+
+		callback('success');
+	});
+}
+
+/** Deletes an item from the entered list, and category, from the database
+ * @param {string} email The users email address
+ * @param {string} list The list to be edited
+ * @param {string} category The category the item will be added under
+ * @param {string} item The item to be added
+ * @param {callback} callback Sends a callback
+ */
+function deleteItemDB(email, list, category, item, callback) {
+	readFile(email, (user) => {
+		var listIndex = getListIndex(list, user);
+		var categoryIndex = getCategoryIndex(list, category, user);
+		var itemIndex= getItemIndex(list, category, item, user)
+
+		user.lists[listIndex].categories[categoryIndex].items.splice(itemIndex, 1);
+
+		updateDB(email, user)
+
+		callback('success')
+	});
 }
 
 module.exports = {
 	login,
 	getListIndex,
 	getCategoryIndex,
+	getItemIndex,
 	readFile,
-	addUserDB,
 	updateDB,
+	addUserDB,
     deleteUserDB,
-    deleteCategoryDB,
-    addCategoryDB,
     addListDB,
-    deleteListDB
+    deleteListDB,
+    addCategoryDB,
+    deleteCategoryDB,
+    addItemDB,
+    deleteItemDB
 }
-
-// henrys unittest example to me (nick)
-// var obj = {
-// 	id:expect.anything(),
-// 	name:expect.anything()
-// }
-
-// test("dbRead", (done)=>{
-// 	readFile({data:"stuff"}, (err, data)=>{
-// 		expect(data).toBe("failed");
-// 		expect(data).toEqual(obj);
-// 		done();
-// 	})
-// })
