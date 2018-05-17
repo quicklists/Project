@@ -135,6 +135,7 @@ function addUserDB(record, table, callback) {
 	});
 }
 
+
 /** Deletes a user document from the database and returns a callback with either 'error' or '1 document deleted'
  * @param {json} record The users data to be deleted from the database
  * @param {string} table The collection name
@@ -269,20 +270,3 @@ module.exports = {
     addItemDB,
     deleteItemDB
 }
-
-	
-
-
-// henrys unittest example to me (nick)
-// var obj = {
-// 	id:expect.anything(),
-// 	name:expect.anything()
-// }
-
-// test("dbRead", (done)=>{
-// 	readFile({data:"stuff"}, (err, data)=>{
-// 		expect(data).toBe("failed");
-// 		expect(data).toEqual(obj);
-// 		done();
-// 	})
-// })
