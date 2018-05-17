@@ -94,9 +94,9 @@ function readFile(email, callback){
  */
 function updateDB(email, data) {
 	connectDB((collection, db, client) => {
-		collection.replaceOne(email, data);
+		collection.replaceOne({email: email}, data);
 	  	client.close();
-	})
+	});
 }
 
 /** Adds a new list to a users file and saves it to the database 
@@ -133,16 +133,18 @@ function deleteCategoryDB(email, list, category, callback) {
  * @param {int} listIndex The index number for the list you are editing
  * @param {string} categoryName The name for the category you want to add
  */
-function addCategoryDB(email, listIndex, categoryName) {
+function addCategoryDB(email, list, category, callback) {
 	readFile(email, (user) => {
-		var categoryObj = {"name": categoryName, "items": [] };
+		var listIndex = getListIndex(list, user)
+		var categoryObj = {"name": category, "items": [] };
 
 		user.lists[listIndex].categories.push(categoryObj);
-		console.log(user.lists[0].categories);
-
 		updateDB(email, user)
+
+		callback('success')
 	});
 }
+
 
 /** Adds a new user document to the database and returns a callback either 'error' or 'success'
  * @param {JSON} record The new users data to add to the database

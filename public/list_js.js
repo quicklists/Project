@@ -33,18 +33,56 @@
  * This function add a new Category to the current list
  */
 function addCategory() {
-	var categoryName = prompt('Enter a new category name:');
-	var myElem = document.getElementById(categoryName);
-	if (myElem === null) {
-		var newElem = document.createElement('UL');
-		var newElem2 = document.createElement('H3')
-		var newId = document.createTextNode(categoryName);
-		newElem.appendChild(newElem2);
-		newElem2.appendChild(newId)
-		newElem.id = categoryName;
-		document.getElementById('categories').appendChild(newElem);
+	var newCategory = prompt('Enter a new category name:');
+	if (newCategory != null) {
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', '/addCategory');
+		xhr.setRequestHeader('Content-Type', 'application/json');
+		xhr.onload = function() {
+		    if (xhr.status === 200) {
+				var newList = document.createElement('UL');
+				var listStyle = document.createElement('H3');
+				var categoryName = document.createTextNode(newCategory);
+
+				newList.appendChild(listStyle);
+				listStyle.appendChild(categoryName);
+				newList.id = newCategory;
+				document.getElementById('categories').appendChild(newList);
+			} else {
+			    alert('Error: change not saved, please try again.');
+			}
+		};
+    	xhr.send(JSON.stringify({
+		    category: newCategory
+		}));
 	}
 }
+
+/**
+ * This function delete a specific Category
+ */
+function delCategory() {
+	var categoryName = document.getElementById('chooseCategory').value
+	var myCategory = document.getElementById(categoryName)
+	if (myCategory === null) {
+		alert('Category does not exist!')
+	} else { 
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', '/deleteCategory');
+		xhr.setRequestHeader('Content-Type', 'application/json');
+		xhr.onload = function() {
+		    if (xhr.status === 200) {
+				myCategory.parentNode.removeChild(myCategory);
+			} else {
+			    alert('Error: change not saved, please try again.');
+			}
+		};
+    	xhr.send(JSON.stringify({
+		    category: categoryName
+		}));
+	}
+}
+
 
 /**
  * This function add a new Item in a specific Category
@@ -89,32 +127,6 @@ function addItem() {
 	}
 }
  
-/**
- * This function delete a specific Category
- */
-function delCategory() {
-	var categoryName = document.getElementById('chooseCategory').value
-	var myCategory = document.getElementById(categoryName)
-	if (myCategory === null) {
-		alert('Category does not exist!')
-	} else { 
-			var xhr = new XMLHttpRequest();
-			xhr.open('POST', '/deleteItem');
-			xhr.setRequestHeader('Content-Type', 'application/json');
-			xhr.onload = function() {
-		    if (xhr.status === 200) {
-				myCategory.parentNode.removeChild(myCategory);
-		    } else {
-		        console.log('Error, not saved on the server');
-		    }
-		};
-
-    	xhr.send(JSON.stringify({
-		    category: categoryName
-		}));
-	}
-}
-
 /**
  * This function delete a specific Category
  */
