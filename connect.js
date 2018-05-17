@@ -142,6 +142,7 @@ function addUserDB(record, table, callback) {
  */
 function deleteUserDB(record, table, callback) {
 	connectDB(function(collection, db, client) {
+
 	    db.collection(table).deleteOne(record, function(err, res) {
 	        if (err){
 	            callback("error");
@@ -246,10 +247,9 @@ function deleteItemDB(email, list, category, item, callback) {
 		var itemIndex= getItemIndex(list, category, item, user)
 
 		user.lists[listIndex].categories[categoryIndex].items.splice(itemIndex, 1);
+		updateDB(email, user);
 
-		updateDB(email, user)
-
-		callback('success')
+		callback('success');
 	});
 }
 
@@ -269,3 +269,20 @@ module.exports = {
     addItemDB,
     deleteItemDB
 }
+
+	
+
+
+// henrys unittest example to me (nick)
+// var obj = {
+// 	id:expect.anything(),
+// 	name:expect.anything()
+// }
+
+// test("dbRead", (done)=>{
+// 	readFile({data:"stuff"}, (err, data)=>{
+// 		expect(data).toBe("failed");
+// 		expect(data).toEqual(obj);
+// 		done();
+// 	})
+// })

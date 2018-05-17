@@ -67,7 +67,7 @@ app.get('/SignupPage', (request, response) => {
 app.get('/homePage', function(req, res) {
     if(req.session && req.session.user){
         res.render('home.hbs', {
-            email: req.session.user.email,
+            username: req.session.user.username,
             lists: req.session.user.lists
         });
     } else {
