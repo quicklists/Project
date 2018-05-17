@@ -191,25 +191,13 @@ function deleteUserDB(record, table, callback) {
 	});
 }
 function addItemDB(email, list, category, item, callback) {
-
 	readFile(email, (user) => {
-
 		var listIndex = getListIndex(list, user);
-
 		var categoryIndex = getCategoryIndex(list, category, user);
-
-
-
 		user.lists[listIndex].categories[categoryIndex].items.push(item)
-
 		updateDB(email, user);
-
-
-
 		callback('success');
-
 	});
-
 }
 
 /** Adds a new list to a users file and saves it to the database 
@@ -251,22 +239,3 @@ module.exports = {
     deleteListDB
 
 }
-
-
-	
-
-
-// henrys unittest example to me (nick)
-// var obj = {
-// 	id:expect.anything(),
-// 	name:expect.anything()
-// }
-
-// test("dbRead", (done)=>{
-// 	readFile({data:"stuff"}, (err, data)=>{
-// 		expect(data).toBe("failed");
-// 		expect(data).toEqual(obj);
-// 		done();
-// 	})
-// })
-
