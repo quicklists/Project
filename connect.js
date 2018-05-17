@@ -136,8 +136,8 @@ function addUserDB(record, table, callback) {
 }
 
 /** Deletes a user document from the database and returns a callback with either 'error' or '1 document deleted'
- * @param {json} record the users data to be deleted from the database
- * @param {string} table the collection name
+ * @param {json} record The users data to be deleted from the database
+ * @param {string} table The collection name
  * @param {callback} callback Sends a callback
  */
 function deleteUserDB(record, table, callback) {
@@ -160,10 +160,10 @@ function deleteUserDB(record, table, callback) {
  * @param {string} list The new lists name
  */
 function addListDB(email, list) {
-	readFile(email, (err, user) => {
-		user.lists.push({name: list})
-		updateDB(email, user)
-	})
+	readFile(email, (user) => {
+		user.lists.push({name: list});
+		updateDB(email, user);
+	});
 }
 
 /** deletes a list from the users file and saves the change to the database
