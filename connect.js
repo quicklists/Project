@@ -1,6 +1,29 @@
 const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://Nick.s:student@ds014388.mlab.com:14388/grocery_list_project'
 
+/** Verifiys the that the inputted email and password are correct format and match the ones in the database.
+ * @param {string} email The users email address
+ * @param {string} password The users password
+ * @param {callback} callback Sends a callback
+ */
+function login(email, password, callback) {
+    if (email.indexOf('@') > 0 && email.indexOf('.') > 0 && (email.indexOf('com') > 0 || email.indexOf('ca') > 0)) {
+        readFile(email, (user) => {
+            if(user === 'failed') {
+                callback('failed')
+            } else {
+                if (password === user.password) {
+                    callback(user)
+                } else {
+                    callback('failed')
+                }
+            }
+        }); 
+    } else {
+        callback('failed')
+    }
+}
+
 /** Connects to our mongo database and returns an active client and collection.
  * @param {callback} callback Sends a callback
  */
@@ -173,6 +196,7 @@ function deleteListDB(email, list, callback) {
 }
 
 module.exports = {
+	login,
 	getListIndex,
 	getCategoryIndex,
 	readFile,
