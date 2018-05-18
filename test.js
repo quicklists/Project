@@ -200,7 +200,7 @@ describe.skip("getItemIndex function testing", () => {
     });
 
 });
-
+/*
 describe.only("renameListDB test", ()=>{
     test("change the list name to a new name", ()=>{
         myDB.renameListDB('foo', 'nick@123.ca', (msg) =>{
@@ -208,3 +208,4 @@ describe.only("renameListDB test", ()=>{
     });
 });
 });
+*/
