@@ -3,6 +3,7 @@
 	<head>
 		<title>Login page</title>
 		<link href='login_style.css' rel='stylesheet' type='text/css' />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
         <a href="signup.hbs"></a>
 	</head>
 	<body>
@@ -16,18 +17,22 @@
 			    	Email<br>
 			        <input type="text" name="email" placeholder='Enter your Email' /><br/>
 			    </div>
+
 			    <div id='passwordEntry' class='text'>
 			    	Password<br>
 			        <input type="password" name="password" placeholder='Enter your Password' />
 			    </div>
+
 			    <div id="error">
 			    	{{error}}
 			    </div>
+
 			    <div id='submitEntry'>
 			    	<input type="submit" value="Login"/>
 			    </div>
+			    
                 <div id="signup">
-                     New User? <a href="signupPage">Sign Up Here!</a> </br> 
+                     New User? <a href="signup">Sign Up Here!</a> </br> 
                 </div>
 			</form>
 		</div>

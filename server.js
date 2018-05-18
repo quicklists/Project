@@ -11,10 +11,9 @@ const fs = require('fs');
 const port = process.env.PORT || 8080;
 
 var app = express();
-
 var session = require('client-sessions');
 var getDB = require('./connect.js');
-var extra = require('./functions.js')
+
 // handlebars setup
 app.set('view engine', 'hbs');
 hbs.registerPartials(__dirname + '/views/partials');
@@ -35,8 +34,38 @@ app.use(session({
     activeDuration: 2 * 60 * 1000
 }));
 
+/**
+ * This add the user to the database
+ * @name signup
+ * @function
+ * @param {string} username
+ * @param {string} email
+ * @param {string} password
+ * @param {string} repassword
+ * @param {callback} callback
+ */
+function signup(username, email, password, repassword, callback) {
+    if (email.indexOf('@') > 0 && email.indexOf('.') > 0 && (email.indexOf('com') > 0 || email.indexOf('ca') > 0) && (password === repassword)) {
+        var user = {
+                    "username": username,
+                    "email": email,
+                    "password": password,
+                    "list":[]
+                };
+        getDB.addUserDB(user, "Users", (msg) => {
+            if(msg === 'error') {
+                callback('failed')
+            } else {
+                callback('success')
+            }
+        }); 
+    } else {
+        callback('failed')
+    }
+}
+
 app.post('/login', function(req, res) {
-    extra.login(req.body.email, req.body.password, (err, user) => {
+    getDB.login(req.body.email, req.body.password, (user) => {
         if (user === 'failed') {
             res.render('login.hbs', {
                 error: 'Wrong email or password'
@@ -48,14 +77,32 @@ app.post('/login', function(req, res) {
     });
 });
 
+app.post('/signup', function (req, res) {
+    console.log("post")
+    signup(req.body.username, req.body.email, req.body.password, req.body.repassword, (msg) => {
+        if (msg === 'failed') {
+            res.render('signup.hbs', {
+                error: 'try again'
+            });
+        } else {
+            req.session.msg = msg
+            res.redirect('/homePage')
+        }
+    });
+});
+
 // Renders the login page
 app.get('/', (request, response) => {
     response.render('login.hbs')
 });
 
 // Renders the signup page
-app.get('/SignupPage', (request, response) => {
+app.get('/signup', (request, response) => {
     response.render('Signup.hbs')
+});
+
+app.get('/maps',(request,response)=>{
+	response.render('maps.hbs')
 });
 
 /**
@@ -68,7 +115,7 @@ app.get('/SignupPage', (request, response) => {
 app.get('/homePage', function(req, res) {
     if(req.session && req.session.user){
         res.render('home.hbs', {
-            email: req.session.user.email,
+            username: req.session.user.username,
             lists: req.session.user.lists
         });
     } else {
@@ -106,18 +153,51 @@ app.get('/listsPage/:listname', function(req, res) {
     }
 });
 
-app.post('/addItem', function(req, res) {
-    console.log(req.body)
-    res.send('ok')
-});
-
-app.post('/deleteItem', function(req, res) {
+app.post('/addCategory', (req, res) => {
     var email = req.session.user.email
     var list = req.session.user.currentList
     var category = req.body.category
-    getDB.dropCategory(email, list, category)
-    res.send('ok')
-})
+    getDB.addCategoryDB(email, list, category, (msg) => {
+        if (msg === 'success') {
+            res.send('ok')
+        }
+    });
+});
+
+app.post('/deleteCategory', (req, res) => {
+    var email = req.session.user.email
+    var list = req.session.user.currentList
+    var category = req.body.category
+    getDB.deleteCategoryDB(email, list, category, (msg) => {
+        if (msg === 'success') {
+            res.send('ok');
+        }
+    });
+});
+
+app.post('/addItem', (req, res) => {
+    var email = req.session.user.email
+    var list = req.session.user.currentList
+    var category = req.body.category
+    var item = req.body.item
+    getDB.addItemDB(email, list, category, item, (msg) => {
+        if (msg === 'success') {
+            res.send('ok');
+        }
+    });
+});
+
+app.post('/deleteItem', (req, res) => {
+    var email = req.session.user.email
+    var list = req.session.user.currentList
+    var category = req.body.category
+    var item = req.body.item
+    getDB.deleteItemDB(email, list, category, item, (msg) => {
+        if (msg === 'success') {
+            res.send('ok');
+        }
+    });
+});
 
 /** User input what grocery items they want and then click a button. 
 The webpage then requests information from the database, which then response by sending that information back to the webpage. 
@@ -153,6 +233,7 @@ app.get('/logout', (req, res) => {
 app.listen(port, () => {
     console.log(`Server is up on the port ${port}`);
 });
+
 
 /*
  * For Unit Testing
