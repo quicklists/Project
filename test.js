@@ -62,19 +62,19 @@ describe("login validation testing.", () => {
     });
 });
 
-describe("getListIndex testing", () => {
+describe.skip("getListIndex testing", () => {
     test("should return a number", () => {
         expect(myDB.getListIndex('grocery list', obj)).toBe(0);
     });
 });
 
-describe("getCategoryIndex testing", () => {
+describe.skip("getCategoryIndex testing", () => {
     test("should return a number", () => {
         expect(myDB.getCategoryIndex('grocery list', 'Vegetables', obj)).toBe(1);
     });
 });
 
-describe("readFile testing", () => {
+describe.skip("readFile testing", () => {
     test("should return an error message", () => {
         myDB.readFile('nick@1a', (user) => {
             expect(user).toBe('failed')
@@ -88,7 +88,7 @@ describe("readFile testing", () => {
     });
 });
 
-describe("addUserDB function testing", ()=>{
+describe.skip("addUserDB function testing", ()=>{
     test("added product to a list", ()=>{
         myDB.addUserDB(obj, "Users", function(msg){
             expect(msg).toBe("success");
@@ -120,7 +120,7 @@ describe.skip("deleteListDB testing", () => {
     });
 });
 
-describe("getListIndex testing", () => {
+describe.skip("getListIndex testing", () => {
     test("should return a number", () => {
         expect(myDB.getListIndex('grocery list', obj)).toBe(0);
     })
@@ -194,9 +194,17 @@ describe.skip("deleteItem function testing", ()=>{
         });
     });
 });
-describe("getItemIndex function testing", () => {
+describe.skip("getItemIndex function testing", () => {
     test("get index of item in category", () => {
         expect(myDB.getItemIndex('grocery list', 'Produce', "pear", obj)).toBe(1)
     });
 
+});
+
+describe.only("renameListDB test", ()=>{
+    test("change the list name to a new name", ()=>{
+        myDB.renameListDB('foo', 'nick@123.ca', (msg) =>{
+            expect(msg).toBe("Success");
+    });
+});
 });

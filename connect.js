@@ -329,6 +329,19 @@ function deleteItemDB(email, list, category, item, callback) {
 	});
 }
 
+/*
+function renameListDB(newname, email){
+  connectDB((collection, db, client) => {
+      //readFile(email);
+	
+		collection.update({email: email},{$set:{name:newname}});
+		//updateDB(email, user);
+
+		callback('success');
+	});
+}
+*/
+    
 module.exports = {
 	login,
 	getListIndex,
@@ -343,7 +356,8 @@ module.exports = {
     addItemDB,
     addListDB,
     deleteItemDB,
-    deleteListDB
+    deleteListDB,
+    renameListDB
 
 }
 
