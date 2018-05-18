@@ -158,7 +158,3 @@ app.listen(port, () => {
  * For Unit Testing
  */
 // module.exports = app;
-
-module.exports = {
-    login
-}

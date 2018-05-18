@@ -93,6 +93,7 @@ function deleteCategoryDB(email, list, category, callback) {
 
    		callback('success')
     });
+}
 
 // tests drop category function
 // deleteCategoryDB('nick@123.ca', 'grocery list', 'Produce', (msg) => {
@@ -155,7 +156,16 @@ function deleteUserDB(record, table, callback) {
 	});
 }
 
-
+/*function renameCategory(email, listIndex, categoryIndex, newname){
+    readFile(email, function(err, user){  
+        user.lists[listIndex].categories[categoryIndex].update{name:"newname"};
+        //db.collection(user).update({name:"newname"})
+        updateDB(email,user);
+        
+    });
+}
+*/
+    
 module.exports = {
 	getListIndex,
 	readFile,
@@ -165,6 +175,8 @@ module.exports = {
     deleteCategoryDB,
     addCategoryDB
 }
+
+renameCategory("nick@123.ca", 0, 1, "NEW")
 
 // henrys unittest example to me (nick)
 // var obj = {
@@ -179,4 +191,3 @@ module.exports = {
 // 		done();
 // 	})
 // })
-
