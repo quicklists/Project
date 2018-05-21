@@ -80,44 +80,38 @@ app.get('/maps',(request,response)=>{
  * @param {JSON} response
  */
 app.get('/homePage', function(req, res) {
-    if(req.session && req.session.user){
-        res.render('home.hbs', {
-            username: req.session.user.username,
-            lists: req.session.user.lists
+    if(req.session && req.session.user) {
+        getDB.readFile(req.session.user.email, (user) => {
+            req.session.user = user
+            res.render('home.hbs', {
+                username: req.session.user.username,
+                lists: req.session.user.lists
+            });
         });
     } else {
         res.redirect('/');
     }
 });
 
-/** User input what items they want and then click a button.
- * @name ListPage
- * @function
- * @param {JSON} request
- * @param {JSON} response
- */
-app.get('/listsPage/:listname', function(req, res) {
-    if(req.session && req.session.user) {
-        var allLists = req.session.user.lists;
-        var listName = req.params.listname;
-        var correctList = null;
+app.post('/addList', (req, res) => {
+    var email = req.session.user.email
+    var list = req.body
+    getDB.addListDB(email, list, (msg) => {
+        if (msg === 'success') {
+            res.send('ok')
+        }
+    });
+    res.send('ok');
+});
 
-        // GO TRHOUGH ALL LIST ITEMS
-          // IF CURRENT LIST.name === listName
-            // correctList = CURRENT LIST 
-            // break;
-
-        // IF correctLIST === null ???
-            // render ERROR>HBS
-        // ELSE
-            // render list.hbs
-
-            res.render('lists.hbs', {
-            list: correctList
-        });
-    } else {
-        res.redirect('/');
-    }
+app.post('/deleteList', (req, res) => {
+    var email = req.session.user.email
+    var list = req.body.list
+    getDB.deleteListDB(email, list, (msg) => {
+        if (msg === 'success') {
+            res.send('ok')
+        }
+    })
 });
 
 app.post('/addCategory', (req, res) => {
@@ -174,13 +168,14 @@ Next, the requested information is displayed on the webpage.
  * @param {JSON} request
  * @param {JSON} response
  */
-app.get('/groceryListPage', function(req, res) {
+app.post('/listPage', function(req, res) {
     if(req.session && req.session.user) {
         getDB.readFile(req.session.user.email, (user) => {
-            req.session.user = user;
-            req.session.user.currentList = req.session.user.lists[0].name
-            res.render('lists.hbs', {
-                list:req.session.user.lists[0]
+            req.session.user = user
+            req.session.user.currentList = req.body.radioList
+            listIndex = getDB.getListIndex(req.body.radioList, req.session.user)
+            res.render('list.hbs', {
+                list: req.session.user.lists[listIndex]
             });
         });
     } else {

@@ -143,14 +143,8 @@ function updateDB(email, data) {
 	connectDB((collection, db, client) => {
 		collection.replaceOne({email: email}, data);
 	  	client.close();
-<<<<<<< HEAD
 	});
 }
-=======
-	})
-}
-
->>>>>>> upstream/master
 
 /** Adds a new user document to the database and returns a callback either 'error' or 'success'
  * @param {JSON} record The new users data to add to the database
@@ -198,7 +192,7 @@ function deleteUserDB(record, table, callback) {
  */
 function addListDB(email, list) {
 	readFile(email, (user) => {
-		user.lists.push({name: list});
+		user.lists.push(list);
 		updateDB(email, user);
 	});
 }

@@ -2,39 +2,75 @@
  * @name newList
  * @function
  */
-function newList() {
-	var chooseListInput = document.getElementById('chooseList');
-	if (!chooseListInput.checkValidity()) {
-        document.getElementById("demo").innerHTML = chooseListInput.validationMessage;
+function addList() {
+    var chooseListInput = document.getElementById('chooseList');
+    if (!chooseListInput.checkValidity()) {
+        swal('Please enter a list.');
+    } else {
+        var listName = chooseListInput.value;
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/addList');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                chooseListInput.value = '';
+                chooseListInput.focus();
+
+                var newListRadio = document.createElement('input');
+                var newId = document.createTextNode(listName);
+                newListRadio.setAttribute('type', 'radio')
+                newListRadio.setAttribute('name', 'radioList')
+                newListRadio.setAttribute('value', listName);
+                document.getElementById('radioForm').appendChild(newRadio);
+            } else {
+                swal('Error: change not saved, please try again.');
+            }
+        };
+        xhr.send(JSON.stringify({
+            name: listName,
+            categories: []
+        }));
     }
-	var listName = chooseListInput.value;
-	chooseListInput.value = '';
-	chooseListInput.focus();
-	var myElem = document.getElementById(listName);
-	if (myElem === null) {
-		var newElem = document.createElement('form');
-		var newElem2 = document.createElement('text');
-		var newElem3 = document.createElement('input');
-		var newId = document.createTextNode(listName);
-		newElem.appendChild(newElem2);
-		newElem2.appendChild(newElem3);
-		newElem3.value = listName;
-		newElem3.type = 'submit';
-		newElem.action = '/listsPage/' + listName;
-		newElem.id = listName;
-		document.getElementById('lists').appendChild(newElem);
-	}
+}
+
+function deleteList() {
+	var chooseListInput = document.getElementById('chooseList');
+    if (!chooseListInput.checkValidity()) {
+        swal('Please enter a list.');
+    } else {
+    	var listName = chooseListInput.value;
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/deleteList');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                chooseListInput.value = '';
+                chooseListInput.focus();
+
+                listName.parentNode.removeChild(listName);
+            } else {
+                swal('Error: change not saved, please try again.');
+            }
+        };
+        xhr.send(JSON.stringify({
+            list: listName
+        }));
+    }
 }
 
 var input = document.getElementById("chooseList");
+
 input.addEventListener("keyup", function(event) {
-  event.preventDefault();
-  if (event.keyCode === 13) {
-    document.getElementById("addList").click();
-  }
+  	event.preventDefault();
+  	if (event.keyCode === 13) {
+    	document.getElementById("addList").click();
+  	}
 });
 
-
 document.getElementById('addList').addEventListener('click', function() {
-	newList();
+    addList();
+});
+
+document.getElementById('delList').addEventListener('click', function() {
+	deleteList();
 });

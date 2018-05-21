@@ -83,33 +83,6 @@ function delCategory() {
 	}
 }
 
-
-/**
- * This function delete a specific Category
- */
-function delCategory() {
-	var categoryName = document.getElementById('chooseCategory').value
-	var myCategory = document.getElementById(categoryName)
-	if (myCategory === null) {
-		alert('Category does not exist!')
-	} else { 
-		var xhr = new XMLHttpRequest();
-		xhr.open('POST', '/deleteCategory');
-		xhr.setRequestHeader('Content-Type', 'application/json');
-		xhr.onload = function() {
-		    if (xhr.status === 200) {
-				myCategory.parentNode.removeChild(myCategory);
-			} else {
-			    alert('Error: change not saved, please try again.');
-			}
-		};
-    	xhr.send(JSON.stringify({
-		    category: categoryName
-		}));
-	}
-}
-
-
 /**
  * This function add a new Item in a specific Category
  */
@@ -175,39 +148,6 @@ function delItem() {
 		}));
 	}
 }
-
-/**
- * This function adds a new list
- */
-function newList() {
-	var chooseListInput = document.getElementById('chooseList');
-	var listName = chooseListInput.value;
-	chooseListInput.value = '';
-	chooseListInput.focus();
-	var myElem = document.getElementById(listName);
-	if (myElem === null) {
-		var newElem = document.createElement('form');
-		var newElem2 = document.createElement('li')
-		var newElem3 = document.createElement('input')
-		var newId = document.createTextNode(listName);
-		newElem.appendChild(newElem2);
-		newElem2.appendChild(newElem3);
-		newElem3.value = listName;
-		newElem3.type = 'submit';
-		newElem.action = '/listsPage/' + listName;
-		//newElem2.appendChild(newId)
-		newElem.id = listName;
-		document.getElementById('lists').appendChild(newElem);
-	}
-}
-
-
-var newAddButton = document.getElementById('addList');
-if(newAddButton) {
-	newAddButton.addEventListener('click', function() {
-		newList();
-	});	
-};
 
 document.getElementById('newCategory').addEventListener('click', function() {
 	addCategory();
