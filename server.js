@@ -41,8 +41,8 @@ app.use(bodyParser.json())
 app.use(session({
     cookieName: 'session',
     secret: 'our_secret_stuff',
-    duration: 5 * 60 * 1000,
-    activeDuration: 2 * 60 * 1000
+    duration: 1 * 60 * 60 * 1000,
+    activeDuration: 5 * 60 * 1000
 }));
 
 /**
@@ -217,6 +217,8 @@ app.post('/addItem', (req, res) => {
     getDB.addItemDB(email, list, category, item, (msg) => {
         if (msg === 'success') {
             res.send('ok');
+        } else {
+            res.send('not ok')
         }
     });
 });

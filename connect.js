@@ -43,7 +43,7 @@ function signup(username, email, password, repassword, callback) {
                     "username": username,
                     "email": email,
                     "password": password,
-                    "list":[]
+                    "lists":[]
                 };
         addUserDB(user, "Users", (msg) => {
             if(msg === 'error') {
@@ -193,10 +193,11 @@ function deleteUserDB(record, table, callback) {
  * @param {string} email The users email address
  * @param {string} list The new lists name
  */
-function addListDB(email, list) {
+function addListDB(email, list, callback) {
 	readFile(email, (user) => {
 		user.lists.push(list);
 		updateDB(email, user);
+		callback('success')
 	});
 }
 
@@ -207,7 +208,7 @@ function addListDB(email, list) {
 function deleteListDB(email, list, callback) {
 	readFile(email, (user) => {
 		listIndex = getListIndex(list, user)
-		user.lists.splice(listIndex)
+		user.lists.splice(listIndex, 1)
 		updateDB(email, user)
 		callback('success')
 	})
