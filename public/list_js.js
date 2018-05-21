@@ -49,7 +49,7 @@ function addCategory() {
 				newList.id = newCategory;
 				document.getElementById('categories').appendChild(newList);
 			} else {
-			    alert('Error: change not saved, please try again.');
+			    swal('Error: change not saved, please try again.');
 			}
 		};
     	xhr.send(JSON.stringify({
@@ -57,6 +57,32 @@ function addCategory() {
 		}));
 	}
 }
+
+/**
+ * This function delete a specific Category
+ */
+function delCategory() {
+	var categoryName = document.getElementById('chooseCategory').value
+	var myCategory = document.getElementById(categoryName)
+	if (myCategory === null) {
+		swal('Category does not exist!')
+	} else { 
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', '/deleteCategory');
+		xhr.setRequestHeader('Content-Type', 'application/json');
+		xhr.onload = function() {
+		    if (xhr.status === 200) {
+				myCategory.parentNode.removeChild(myCategory);
+			} else {
+			    swal('Error: change not saved, please try again.');
+			}
+		};
+    	xhr.send(JSON.stringify({
+		    category: categoryName
+		}));
+	}
+}
+
 
 /**
  * This function delete a specific Category
@@ -93,7 +119,7 @@ function addItem() {
 	var myCategory = document.getElementById(categoryName)
 	var myName = document.getElementById(itemName)	
 	if (myCategory === null) {
-		alert('Category does not exist!')
+		swal('Category does not exist!')
 	} else {
 		// problem: can be number
 		if (myName === null && itemName.length > 0) {
@@ -118,7 +144,7 @@ function addItem() {
 			    category: categoryName
 			}));
 		} else {
-			alert('Cant add item!')
+			swal('Cant add item!')
 		}
 	}
 }
@@ -131,7 +157,7 @@ function delItem() {
 	var itemName = document.getElementById('chooseItem').value
 	var myItem = document.getElementById(itemName)
 	if (myItem === null) {
-		alert('Item does not exist!')
+		swal('Item does not exist!')
 	} else { 
 		var xhr = new XMLHttpRequest();
 		xhr.open('POST', '/deleteItem');
@@ -140,7 +166,7 @@ function delItem() {
 		    if (xhr.status === 200) {
 				myItem.parentNode.removeChild(myItem);
 		    } else {
-		        alert('Error, not saved on the server');
+		        swal('Error, not saved on the server');
 		    }
 		}
     	xhr.send(JSON.stringify({

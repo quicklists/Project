@@ -24,6 +24,36 @@ function login(email, password, callback) {
     }
 }
 
+/**
+ * This add the user to the database
+ * @name signup
+ * @function
+ * @param {string} username
+ * @param {string} email
+ * @param {string} password
+ * @param {string} repassword
+ * @param {callback} callback
+ */
+function signup(username, email, password, repassword, callback) {
+    if (email.indexOf('@') > 0 && email.indexOf('.') > 0 && (email.indexOf('com') > 0 || email.indexOf('ca') > 0) && (email.indexOf('com') > email.indexOf('@') || email.indexOf('ca') > email.indexOf('@')) && (password === repassword) && (password != "") && (username != "")) {
+        var user = {
+                    "username": username,
+                    "email": email,
+                    "password": password,
+                    "list":[]
+                };
+        addUserDB(user, "Users", (msg) => {
+            if(msg === 'error') {
+                callback('failed')
+            } else {
+                callback('success')
+            }
+        }); 
+    } else {
+        callback('failed')
+    }
+}
+
 /** Connects to our mongo database and returns an active client and collection.
  * @param {callback} callback Sends a callback
  */
@@ -113,8 +143,14 @@ function updateDB(email, data) {
 	connectDB((collection, db, client) => {
 		collection.replaceOne({email: email}, data);
 	  	client.close();
+<<<<<<< HEAD
 	});
 }
+=======
+	})
+}
+
+>>>>>>> upstream/master
 
 /** Adds a new user document to the database and returns a callback either 'error' or 'success'
  * @param {JSON} record The new users data to add to the database
@@ -134,6 +170,7 @@ function addUserDB(record, table, callback) {
    		});
 	});
 }
+
 
 /** Deletes a user document from the database and returns a callback with either 'error' or '1 document deleted'
  * @param {json} record The users data to be deleted from the database
@@ -255,6 +292,7 @@ function deleteItemDB(email, list, category, item, callback) {
 
 module.exports = {
 	login,
+	signup,
 	getListIndex,
 	getCategoryIndex,
 	getItemIndex,
@@ -270,9 +308,6 @@ module.exports = {
     deleteItemDB
 }
 
-	
-
-
 // henrys unittest example to me (nick)
 // var obj = {
 // 	id:expect.anything(),
@@ -285,4 +320,3 @@ module.exports = {
 // 		expect(data).toEqual(obj);
 // 		done();
 // 	})
-// })

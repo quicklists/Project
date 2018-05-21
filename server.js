@@ -47,14 +47,29 @@ app.post('/login', function(req, res) {
     });
 });
 
+app.post('/signup', function (req, res) {
+    getDB.signup(req.body.username, req.body.email, req.body.password, req.body.repassword, (msg) => {
+        if (msg === 'failed') {
+            //res.render('signup.hbs')
+        } else {
+            req.session.msg = msg
+            res.redirect('/homePage')
+        }
+    });
+});
+
 // Renders the login page
 app.get('/', (request, response) => {
     response.render('login.hbs')
 });
 
 // Renders the signup page
-app.get('/SignupPage', (request, response) => {
+app.get('/signup', (request, response) => {
     response.render('Signup.hbs')
+});
+
+app.get('/maps',(request,response)=>{
+	response.render('maps.hbs')
 });
 
 /**
