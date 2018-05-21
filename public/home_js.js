@@ -1,6 +1,4 @@
-/* User input what lists they want and then click a button.
- * @name newList
- * @function
+/** Gets the users input and sends it to the server to add the list, if the server returns ok it updates the web page
  */
 function addList() {
     var chooseListInput = document.getElementById('chooseList');
@@ -33,6 +31,8 @@ function addList() {
     }
 }
 
+/** Gets the users input and sends it to the server to delete the list, if the server returns ok it updates the web page
+ */
 function deleteList() {
 	var chooseListInput = document.getElementById('chooseList');
     if (!chooseListInput.checkValidity()) {

@@ -34,7 +34,8 @@
 				<div>
 					<form id='radioForm' action="/listPage" method="post">
 					{{#each lists as |list|}}
-						<input type="radio" name="radioList" value='{{list.name}}'>{{list.name}}<br>
+						<input id="{{list.name}}" type="radio" name="radioList" value='{{list.name}}'>
+						<label for='{{list.name}}'>{{list.name}}<br>
 					{{/each}}
 						<input type='submit' value='Edit list'>
 					</form>

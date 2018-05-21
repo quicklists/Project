@@ -1,4 +1,7 @@
+/** Mongoclient module */
 const MongoClient = require('mongodb').MongoClient;
+
+/** mongodb database url */
 const url = 'mongodb://Nick.s:student@ds014388.mlab.com:14388/grocery_list_project'
 
 /** Verifiys the that the inputted email and password are correct format and match the ones in the database.
@@ -301,16 +304,3 @@ module.exports = {
     addItemDB,
     deleteItemDB
 }
-
-// henrys unittest example to me (nick)
-// var obj = {
-// 	id:expect.anything(),
-// 	name:expect.anything()
-// }
-
-// test("dbRead", (done)=>{
-// 	readFile({data:"stuff"}, (err, data)=>{
-// 		expect(data).toBe("failed");
-// 		expect(data).toEqual(obj);
-// 		done();
-// 	})
