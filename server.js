@@ -161,9 +161,12 @@ Next, the requested information is displayed on the webpage.
  */
 app.get('/groceryListPage', function(req, res) {
     if(req.session && req.session.user) {
-        req.session.user.currentList = req.session.user.lists[0].name
-        res.render('grocerylist.hbs', {
-            lists: req.session.user.lists
+        getDB.readFile(req.session.user.email, (user) => {
+            req.session.user = user;
+            req.session.user.currentList = req.session.user.lists[0].name
+            res.render('lists.hbs', {
+                list:req.session.user.lists[0]
+            });
         });
     } else {
         res.redirect('/');
