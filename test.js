@@ -46,7 +46,7 @@ afterAll(() => {
     });
 });
 
-describe("login validation testing.", () => {
+describe.skip("login validation testing.", () => {
     test("email should be proper email format.", () => {
         myDB.login('nick123.com', '123', (user) => {
             expect(user).toBe('failed');
@@ -62,19 +62,19 @@ describe("login validation testing.", () => {
     });
 });
 
-describe("getListIndex testing", () => {
+describe.skip("getListIndex testing", () => {
     test("should return a number", () => {
         expect(myDB.getListIndex('grocery list', obj)).toBe(0);
     });
 });
 
-describe("getCategoryIndex testing", () => {
+describe.skip("getCategoryIndex testing", () => {
     test("should return a number", () => {
         expect(myDB.getCategoryIndex('grocery list', 'Vegetables', obj)).toBe(1);
     });
 });
 
-describe("readFile testing", () => {
+describe.skip("readFile testing", () => {
     test("should return an error message", () => {
         myDB.readFile('nick@1a', (user) => {
             expect(user).toBe('failed')
@@ -88,7 +88,7 @@ describe("readFile testing", () => {
     });
 });
 
-describe("addUserDB function testing", ()=>{
+describe.skip("addUserDB function testing", ()=>{
     test("added product to a list", ()=>{
         myDB.addUserDB(obj, "Users", function(msg){
             expect(msg).toBe("success");
@@ -120,7 +120,7 @@ describe.skip("deleteListDB testing", () => {
     });
 });
 
-describe("getListIndex testing", () => {
+describe.skip("getListIndex testing", () => {
     test("should return a number", () => {
         expect(myDB.getListIndex('grocery list', obj)).toBe(0);
     })
@@ -190,11 +190,19 @@ describe.skip("deleteCategoryDB function testing", () => {
 describe.skip("deleteItem function testing", ()=>{
     test("delete item from category", ()=>{
         myDB.deleteItemDB('brendon@1234', "grocery list", "Produce", "orange", (msg) =>{
-            expect(msg).toBe("Success");
+            expect(msg).toBe("success");
         });
     });
 });
-describe("getItemIndex function testing", () => {
+
+describe.skip("additem function testing",()=>{
+	test("add item to category",()=>{
+		myDB.addItemDB('brendon@1234',"grocery list","Produce","apple",(msg)=>{
+			expect(msg).toBe("success");
+		})
+	})
+})
+describe.skip("getItemIndex function testing", () => {
     test("get index of item in category", () => {
         expect(myDB.getItemIndex('grocery list', 'Produce', "pear", obj)).toBe(1)
     });
