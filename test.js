@@ -1,5 +1,7 @@
 var myDB = require("./connect");
-// var server = require("./server.js")
+//var server = require("./server.js")
+var signupfcn = require("./public/signup_function.js");
+
 var obj = {
     "username": "tester",
     "email": "test@1.ca",
@@ -165,9 +167,9 @@ var shaunObj = {
 };
 
 describe.skip("updateDB testing", ()=>{
-	test("update brendon@1234 to shaun@1234", ()=>{
-		myDB.updateDb(email, shaunObj)
-	}); 
+    test("update brendon@1234 to shaun@1234", ()=>{
+        myDB.updateDb(email, shaunObj)
+    }); 
 });
 
 /*
@@ -187,16 +189,97 @@ describe.skip("deleteCategoryDB function testing", () => {
         });
     });
 });
+
 describe.skip("deleteItem function testing", ()=>{
     test("delete item from category", ()=>{
         myDB.deleteItemDB('brendon@1234', "grocery list", "Produce", "orange", (msg) =>{
-            expect(msg).toBe("Success");
+            expect(msg).toBe("success");
         });
     });
 });
+
+describe.skip("additem function testing",()=>{
+    test("add item to category",()=>{
+        myDB.addItemDB('nick@123.ca',"list1","Meat","Turkey",(msg)=>{
+            expect(msg).toBe("success");
+        })
+    })
+})
+
 describe("getItemIndex function testing", () => {
     test("get index of item in category", () => {
         expect(myDB.getItemIndex('grocery list', 'Produce', "pear", obj)).toBe(1)
     });
+});
 
+describe("checkSignUp function testing", ()=> {
+    test("check wrong email format", () => {
+        expect(signupfcn.checkSignUp("shaun", "shaun@123.a", "123", "123")).toBe("Email format incorrect")
+    });
+    test("check unmatched passwords", () => {
+        expect(signupfcn.checkSignUp("shaun", "shaun@123.ca", "123", "1234")).toBe("Passwords don't match")
+    });
+    test("check Username is empty", () => {
+        expect(signupfcn.checkSignUp("", "shaun@123.ca", "123", "123")).toBe("Username cannot be empty")
+    });
+    test("check Email is empty", () => {
+        expect(signupfcn.checkSignUp("shaun", "", "123", "123")).toBe("Email cannot be empty")
+    });
+    test("check Password is empty", () => {
+        expect(signupfcn.checkSignUp("shaun", "shaun@123.ca", "", "123")).toBe("Password cannot be empty")
+    });
+    test("check Re-enter Password is empty", () => {
+        expect(signupfcn.checkSignUp("shaun", "shaun@123.ca", "123", "")).toBe("Re-enter Password cannot be empty")
+    });
+    test("check all fields are empty", () => {
+        expect(signupfcn.checkSignUp("", "", "", "")).toBe("Username cannot be empty")
+    });
+});
+
+describe("signup function testing", () => {
+    test("sign up a new account", () => {
+        myDB.signup("testuser", "testuser@123.com", "123", "123", (msg) => {
+            expect(msg).toBe("success");
+        });
+    });
+    test("sign up with incorrect email format", () => {
+        myDB.signup("testuser", "testuser@123.a", "123", "123", (msg) => {
+            expect(msg).toBe("failed");
+        });
+    });
+    test("sign up with incorrect email format", () => {
+        myDB.signup("testuser", "testuser.ca@123", "123", "123", (msg) => {
+            expect(msg).toBe("failed");
+        });
+    });
+    test("sign up with incorrect re-entered password", () => {
+        myDB.signup("testuser", "testuser@123.ca", "123", "1234", (msg) => {
+            expect(msg).toBe("failed");
+        });
+    });
+    test("sign up with empty username field", () => {
+        myDB.signup("", "testuser@123.ca", "123", "123", (msg) => {
+            expect(msg).toBe("failed");
+        });
+    });
+    test("sign up with empty email field", () => {
+        myDB.signup("testuser", "", "123", "123", (msg) => {
+            expect(msg).toBe("failed");
+        });
+    });
+    test("sign up with empty password field", () => {
+        myDB.signup("testuser", "testuser@123.ca", "", "123", (msg) => {
+            expect(msg).toBe("failed");
+        });
+    });
+    test("sign up with empty re-enter password field", () => {
+        myDB.signup("testuser", "testuser@123.ca", "123", "", (msg) => {
+            expect(msg).toBe("failed");
+        });
+    });
+    test("sign up with all empty fields", () => {
+        myDB.signup("", "", "", "", (msg) => {
+            expect(msg).toBe("failed");
+        });
+    });
 });
