@@ -105,7 +105,7 @@ app.get('/', (request, response) => {
  * @param {JSON} response
  */
 app.get('/signup', (request, response) => {
-    response.render('Signup.hbs')
+    response.render('signup.hbs')
 });
 
 /**
@@ -297,6 +297,20 @@ app.get('/account', (request, response) => {
 });
 
 /**
+<<<<<<< HEAD
+=======
+ * renders the about page
+ * @name /about
+ * @function
+ * @param {JSON} request
+ * @param {JSON} response
+ */
+app.get('/about', (request, response) => {
+    response.render('about.hbs')
+});
+
+/**
+>>>>>>> upstream/master
  * deletes session data and redirects to login page
  * @name /logout
  * @function
