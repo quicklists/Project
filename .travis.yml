@@ -1,7 +1,11 @@
 language: node_js
-# node_js:
-#  - "node"
+ node_js:
+  - "node"
 
  deploy:
   provider: heroku
+  api_key: 
+    secure: 552938dd-7451-476d-bc4f-63287080bff4
   strategy: git
+  on:
+    node: 9.3.0
