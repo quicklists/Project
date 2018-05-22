@@ -1,4 +1,7 @@
+/** Mongoclient module */
 const MongoClient = require('mongodb').MongoClient;
+
+/** mongodb database url */
 const url = 'mongodb://Nick.s:student@ds014388.mlab.com:14388/grocery_list_project'
 
 /** Verifiys the that the inputted email and password are correct format and match the ones in the database.
@@ -40,7 +43,7 @@ function signup(username, email, password, repassword, callback) {
                     "username": username,
                     "email": email,
                     "password": password,
-                    "list":[]
+                    "lists":[]
                 };
         addUserDB(user, "Users", (msg) => {
             if(msg === 'error') {
@@ -143,9 +146,22 @@ function updateDB(email, data) {
 	connectDB((collection, db, client) => {
 		collection.replaceOne({email: email}, data);
 	  	client.close();
-	})
+	});
 }
 
+/** Renames a list name
+ * @param {string} email The users email address
+ * @param {string} newName The lists new name
+ * @param {string} oldName The lists old name
+ */
+function renameDB(email, newName, oldName, callback) {
+	readFile(email, (user) => {
+		listIndex = getListIndex(oldName, user)
+		user.lists[listIndex].name = newName
+		updateDB(email, user)
+		callback('success')
+	})
+}
 
 /** Adds a new user document to the database and returns a callback either 'error' or 'success'
  * @param {JSON} record The new users data to add to the database
@@ -191,10 +207,11 @@ function deleteUserDB(record, table, callback) {
  * @param {string} email The users email address
  * @param {string} list The new lists name
  */
-function addListDB(email, list) {
+function addListDB(email, list, callback) {
 	readFile(email, (user) => {
-		user.lists.push({name: list});
+		user.lists.push(list);
 		updateDB(email, user);
+		callback('success')
 	});
 }
 
@@ -205,7 +222,7 @@ function addListDB(email, list) {
 function deleteListDB(email, list, callback) {
 	readFile(email, (user) => {
 		listIndex = getListIndex(list, user)
-		user.lists.splice(listIndex)
+		user.lists.splice(listIndex, 1)
 		updateDB(email, user)
 		callback('success')
 	})
@@ -306,10 +323,13 @@ module.exports = {
 	getItemIndex,
 	readFile,
 	updateDB,
+	renameDB,
 	addUserDB,
     deleteUserDB,
-    deleteCategoryDB,
+    addListDB,
+    deleteListDB,
     addCategoryDB,
+    deleteCategoryDB,
     addItemDB,
     addListDB,
     deleteItemDB,
