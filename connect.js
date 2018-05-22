@@ -333,8 +333,7 @@ module.exports = {
     addItemDB,
     addListDB,
     deleteItemDB,
-    deleteListDB,
-    renameListDB
+    deleteListDB
 
 }
 
