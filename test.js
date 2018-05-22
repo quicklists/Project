@@ -199,11 +199,11 @@ describe.skip("deleteItem function testing", ()=>{
 });
 
 describe.skip("additem function testing",()=>{
-    test("add item to category",()=>{
-        myDB.addItemDB('nick@123.ca',"list1","Meat","Turkey",(msg)=>{
-            expect(msg).toBe("success");
-        })
-    })
+	test("add item to category",()=>{
+		myDB.addItemDB('nick@123.ca',"list1","Meat","Turkey",(msg)=>{
+			expect(msg).toBe("success");
+		})
+	})
 })
 
 describe("getItemIndex function testing", () => {

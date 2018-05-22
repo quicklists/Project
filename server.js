@@ -10,8 +10,19 @@ const fs = require('fs');
 /** localhost test port */
 const port = process.env.PORT || 8080;
 
+/** 
+ * shorthand for the express module 
+ * @var {} app
+ */
 var app = express();
-var session = require('client-sessions');
+
+/** client-sessions module */
+const session = require('client-sessions');
+
+/**
+ * imports the connect.js file
+ * @var {} getDB
+ */
 var getDB = require('./connect.js');
 
 // handlebars setup
@@ -30,59 +41,18 @@ app.use(bodyParser.json())
 app.use(session({
     cookieName: 'session',
     secret: 'our_secret_stuff',
-    duration: 5 * 60 * 1000,
-    activeDuration: 2 * 60 * 1000
+    duration: 1 * 60 * 60 * 1000,
+    activeDuration: 1 * 30 * 60 * 1000
 }));
 
-
-function login(email, password, callback) {
-    if (email.indexOf('@') > 0 && email.indexOf('.') > 0 && (email.indexOf('com') > 0 || email.indexOf('ca') > 0)) {
-        getDB.readFile(email, (err, user) => {
-            if(user === 'failed') {
-                callback(err, 'failed')
-            } else {
-                if (password === user.password) {
-                    callback(err, user)
-                } else {
-                    callback(err, 'failed')
-                }
-            }
-        }); 
-    } else {
-        callback('failed')
-    }
-}
-
 /**
- * This add the user to the database
- * @name signup
+ * sends the username and password to the DB for validation, if true it redirects to the homepage, 
+ * else it renders the login page with a error message
+ * @name login
  * @function
- * @param {string} username
- * @param {string} email
- * @param {string} password
- * @param {string} repassword
- * @param {callback} callback
+ * @param {JSON} request
+ * @param {JSON} response
  */
-function signup(username, email, password, repassword, callback) {
-    if (email.indexOf('@') > 0 && email.indexOf('.') > 0 && (email.indexOf('com') > 0 || email.indexOf('ca') > 0) && (password === repassword)) {
-        var user = {
-                    "username": username,
-                    "email": email,
-                    "password": password,
-                    "list":[]
-                };
-        getDB.addUserDB(user, "Users", (msg) => {
-            if(msg === 'error') {
-                callback('failed')
-            } else {
-                callback('success')
-            }
-        }); 
-    } else {
-        callback('failed')
-    }
-}
-
 app.post('/login', function(req, res) {
     getDB.login(req.body.email, req.body.password, (user) => {
         if (user === 'failed') {
@@ -96,13 +66,19 @@ app.post('/login', function(req, res) {
     });
 });
 
+
+/**
+ * sends the signup data to the DB for validation, if true it redirects to the homepage, 
+ * else it renders the signup page again
+ * @name signup
+ * @function
+ * @param {JSON} request
+ * @param {JSON} response
+ */
 app.post('/signup', function (req, res) {
-    console.log("post")
-    signup(req.body.username, req.body.email, req.body.password, req.body.repassword, (msg) => {
+    getDB.signup(req.body.username, req.body.email, req.body.password, req.body.repassword, (msg) => {
         if (msg === 'failed') {
-            res.render('signup.hbs', {
-                error: 'try again'
-            });
+            // res.render('signup.hbs')
         } else {
             req.session.msg = msg
             res.redirect('/homePage')
@@ -110,14 +86,26 @@ app.post('/signup', function (req, res) {
     });
 });
 
-// Renders the login page
+/**
+ * renders the login page
+ * @name /
+ * @function
+ * @param {JSON} request
+ * @param {JSON} response
+ */
 app.get('/', (request, response) => {
     response.render('login.hbs')
 });
 
-// Renders the signup page
+/**
+ * renders the signup page
+ * @name signup
+ * @function
+ * @param {JSON} request
+ * @param {JSON} response
+ */
 app.get('/signup', (request, response) => {
-    response.render('Signup.hbs')
+    response.render('signup.hbs')
 });
 
 /**
@@ -128,46 +116,79 @@ app.get('/signup', (request, response) => {
  * @param {JSON} response
  */
 app.get('/homePage', function(req, res) {
-    if(req.session && req.session.user){
-        res.render('home.hbs', {
-            username: req.session.user.username,
-            lists: req.session.user.lists
+    if(req.session && req.session.user) {
+        getDB.readFile(req.session.user.email, (user) => {
+            req.session.user = user
+            res.render('home.hbs', {
+                username: req.session.user.username,
+                lists: req.session.user.lists
+            });
         });
     } else {
         res.redirect('/');
     }
 });
 
-/** User input what items they want and then click a button.
- * @name ListPage
+/**
+ * sends a lists old name and the new name to the DB to change it. if it returns true then the function sends a response to the webpage.
+ * @name addList
  * @function
  * @param {JSON} request
  * @param {JSON} response
  */
-app.get('/listsPage/:listname', function(req, res) {
-    if(req.session && req.session.user) {
-        var allLists = req.session.user.lists;
-        var listName = req.params.listname;
-        var correctList = null;
-
-        // GO TRHOUGH ALL LIST ITEMS
-          // IF CURRENT LIST.name === listName
-            // correctList = CURRENT LIST 
-            // break;
-
-        // IF correctLIST === null ???
-            // render ERROR>HBS
-        // ELSE
-            // render list.hbs
-
-            res.render('lists.hbs', {
-            list: correctList
-        });
-    } else {
-        res.redirect('/');
-    }
+app.post('/renameList', (req, res) => {
+    var email = req.session.user.email
+    var newList = req.body.newList
+    var oldList = req.body.oldList
+    getDB.renameDB(email, newList, oldList, (msg) => {
+        if (msg === 'success') {
+            res.send('ok')
+        }
+    });
 });
 
+/**
+ * sends the new lists name to the DB to add it. if it returns true then the function sends a response to the webpage.
+ * @name addList
+ * @function
+ * @param {JSON} request
+ * @param {JSON} response
+ */
+app.post('/addList', (req, res) => {
+    var email = req.session.user.email
+    var list = req.body
+    getDB.addListDB(email, list, (msg) => {
+        if (msg === 'success') {
+            res.send('ok')
+        }
+    });
+});
+
+/**
+ * sends a the lists name to the DB to delete it. if it returns true then the function sends a response to the webpage.
+ * @name deleteList
+ * @function
+ * @param {JSON} request
+ * @param {JSON} response
+ */
+app.post('/deleteList', (req, res) => {
+    var email = req.session.user.email
+    var list = req.body.list
+    getDB.deleteListDB(email, list, (msg) => {
+        if (msg === 'success') {
+            res.send('ok')
+        }
+    })
+});
+
+/**
+ * sends a category and list to the DB to add the category to the list. 
+ * if it returns true then the function sends a response to the webpage.
+ * @name addCategory
+ * @function
+ * @param {JSON} request
+ * @param {JSON} response
+ */
 app.post('/addCategory', (req, res) => {
     var email = req.session.user.email
     var list = req.session.user.currentList
@@ -179,6 +200,14 @@ app.post('/addCategory', (req, res) => {
     });
 });
 
+/**
+ * sends a category and list to the DB to delete the category from the list. 
+ * if it returns true then the function sends a response to the webpage.
+ * @name deleteCategory
+ * @function
+ * @param {JSON} request
+ * @param {JSON} response
+ */
 app.post('/deleteCategory', (req, res) => {
     var email = req.session.user.email
     var list = req.session.user.currentList
@@ -190,6 +219,14 @@ app.post('/deleteCategory', (req, res) => {
     });
 });
 
+/**
+ * sends a category, item and list to the DB to add the item to the list. 
+ * if it returns true then the function sends a response to the webpage.
+ * @name addItem
+ * @function
+ * @param {JSON} request
+ * @param {JSON} response
+ */
 app.post('/addItem', (req, res) => {
     var email = req.session.user.email
     var list = req.session.user.currentList
@@ -198,10 +235,20 @@ app.post('/addItem', (req, res) => {
     getDB.addItemDB(email, list, category, item, (msg) => {
         if (msg === 'success') {
             res.send('ok');
+        } else {
+            res.send('not ok')
         }
     });
 });
 
+/**
+ * sends a category, item and list to the DB to delete the item from the list. 
+ * if it returns true then the function sends a response to the webpage.
+ * @name deleteItem
+ * @function
+ * @param {JSON} request
+ * @param {JSON} response
+ */
 app.post('/deleteItem', (req, res) => {
     var email = req.session.user.email
     var list = req.session.user.currentList
@@ -214,43 +261,67 @@ app.post('/deleteItem', (req, res) => {
     });
 });
 
-/** User input what grocery items they want and then click a button. 
-The webpage then requests information from the database, which then response by sending that information back to the webpage. 
-Next, the requested information is displayed on the webpage. 
+/** 
+ * User input what grocery items they want and then click a button. 
+ * The webpage then requests information from the database, which then response by sending that information back to the webpage. 
+ * Next, the requested information is displayed on the webpage. 
  * @name groceryListPage
  * @function
  * @param {JSON} request
  * @param {JSON} response
  */
-app.get('/groceryListPage', function(req, res) {
+app.post('/listPage', function(req, res) {
     if(req.session && req.session.user) {
-        req.session.user.currentList = req.session.user.lists[0].name
-        res.render('grocerylist.hbs', {
-            lists: req.session.user.lists
+        getDB.readFile(req.session.user.email, (user) => {
+            req.session.user = user
+            req.session.user.currentList = req.body.radioList
+            listIndex = getDB.getListIndex(req.body.radioList, req.session.user)
+            res.render('list.hbs', {
+                list: req.session.user.lists[listIndex]
+            });
         });
     } else {
         res.redirect('/');
     }
 });
 
-/*
- * Start the account page
+/**
+ * renders the account page
+ * @name /account
+ * @function
+ * @param {JSON} request
+ * @param {JSON} response
  */
 app.get('/account', (request, response) => {
     response.render('accountsettings.hbs')
 });
 
+/**
+<<<<<<< HEAD
+=======
+ * renders the about page
+ * @name /about
+ * @function
+ * @param {JSON} request
+ * @param {JSON} response
+ */
+app.get('/about', (request, response) => {
+    response.render('about.hbs')
+});
+
+/**
+>>>>>>> upstream/master
+ * deletes session data and redirects to login page
+ * @name /logout
+ * @function
+ * @param {JSON} request
+ * @param {JSON} response
+ */
 app.get('/logout', (req, res) => {
     req.session.reset();
     res.redirect('/');
-})
+});
 
 app.listen(port, () => {
     console.log(`Server is up on the port ${port}`);
 });
-
-
-/*
- * For Unit Testing
- */
-// module.exports = app;
