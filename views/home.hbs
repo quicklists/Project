@@ -23,20 +23,20 @@
 				</div>
 
 				<div>
-					<form id='radioForm' action="/listPage" method="post">
+					<form id='radioForm' action="/listPage" method="post" onsubmit="return valid();" >
 					{{#each lists as |list|}}
-						<input id="{{list.name}}" type="radio" name="radioList" value='{{list.name}}'><label for='{{list.name}}'>{{list.name}}</label><br>
+						<input type="radio" name="radioList" id="{{list.name}}" value="{{list.name}}"><label for='{{list.name}}'>{{list.name}}</label><br>
 					{{/each}}
-					{{#if lists.length}}
-						<input class='button' id='sendButton' type='submit' value='Open list'>
-					{{/if}}
+						<input type='submit' class='button' id='sendButton' value='Open List'>
 					</form>
-					{{#if lists.length}}
-						<button class='button' id='delList'>Delete list</button>
-					{{/if}}
+				</div>
+				<div id='editButtons'>
+					<button class='button' id='renameList'>Rename List</button>
+					<button class='button' id='delList'>Delete List</button>
 				</div>
 			</div>
 		</div>
+
 		<script src='home_js.js'></script>
 		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	</body>

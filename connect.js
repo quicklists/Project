@@ -149,6 +149,20 @@ function updateDB(email, data) {
 	});
 }
 
+/** Renames a list name
+ * @param {string} email The users email address
+ * @param {string} newName The lists new name
+ * @param {string} oldName The lists old name
+ */
+function renameDB(email, newName, oldName, callback) {
+	readFile(email, (user) => {
+		listIndex = getListIndex(oldName, user)
+		user.lists[listIndex].name = newName
+		updateDB(email, user)
+		callback('success')
+	})
+}
+
 /** Adds a new user document to the database and returns a callback either 'error' or 'success'
  * @param {JSON} record The new users data to add to the database
  * @param {string} table the collection name
@@ -296,6 +310,7 @@ module.exports = {
 	getItemIndex,
 	readFile,
 	updateDB,
+	renameDB,
 	addUserDB,
     deleteUserDB,
     addListDB,

@@ -42,7 +42,7 @@ app.use(session({
     cookieName: 'session',
     secret: 'our_secret_stuff',
     duration: 1 * 60 * 60 * 1000,
-    activeDuration: 5 * 60 * 1000
+    activeDuration: 1 * 30 * 60 * 1000
 }));
 
 /**
@@ -78,7 +78,7 @@ app.post('/login', function(req, res) {
 app.post('/signup', function (req, res) {
     getDB.signup(req.body.username, req.body.email, req.body.password, req.body.repassword, (msg) => {
         if (msg === 'failed') {
-            res.render('signup.hbs')
+            // res.render('signup.hbs')
         } else {
             req.session.msg = msg
             res.redirect('/homePage')
@@ -127,6 +127,24 @@ app.get('/homePage', function(req, res) {
     } else {
         res.redirect('/');
     }
+});
+
+/**
+ * sends a lists old name and the new name to the DB to change it. if it returns true then the function sends a response to the webpage.
+ * @name addList
+ * @function
+ * @param {JSON} request
+ * @param {JSON} response
+ */
+app.post('/renameList', (req, res) => {
+    var email = req.session.user.email
+    var newList = req.body.newList
+    var oldList = req.body.oldList
+    getDB.renameDB(email, newList, oldList, (msg) => {
+        if (msg === 'success') {
+            res.send('ok')
+        }
+    });
 });
 
 /**

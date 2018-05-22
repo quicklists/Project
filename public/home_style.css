@@ -84,3 +84,14 @@ body {
     opacity: 1.0;
     transition: 0.4s;
 }
+
+#renameList {
+    position: absolute;
+    bottom: 0%;
+}
+
+#delList {
+    position: absolute;
+    right: 0%;
+    bottom: 0%;
+}
