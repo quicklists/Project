@@ -49,7 +49,7 @@ body {
 }
 /* End of the Navigation bar */
 
-.text {
+.text{
     text-align: center;
     font-family: verdana;
 }
@@ -95,16 +95,18 @@ body {
 
 #renameList {
     position: absolute;
-    top:30%;
-    left:80%;
+    top:2%;
+    left:19%;
+
 }
 
 #delList {
     position:absolute;
-    top:20%;
-    left:80%;
+    top:2%;
+    left:88%;
     background-color:red;
 }
+
 #radioForm {
     display: block;
     position: absolute;
@@ -165,4 +167,11 @@ body {
     opacity: 1;
     -webkit-transform: scale(1);
     transform: scale(1);
+}
+
+
+#addList {
+    position:absolute;
+    top:2%;
+    left:3%;
 }
