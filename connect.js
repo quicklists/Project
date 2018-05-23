@@ -43,7 +43,7 @@ function signup(username, email, password, repassword, callback) {
                     "username": username,
                     "email": email,
                     "password": password,
-                    "list":[]
+                    "lists":[]
                 };
         addUserDB(user, "Users", (msg) => {
             if(msg === 'error') {
@@ -149,6 +149,20 @@ function updateDB(email, data) {
 	});
 }
 
+/** Renames a list name
+ * @param {string} email The users email address
+ * @param {string} newName The lists new name
+ * @param {string} oldName The lists old name
+ */
+function renameDB(email, newName, oldName, callback) {
+	readFile(email, (user) => {
+		listIndex = getListIndex(oldName, user)
+		user.lists[listIndex].name = newName
+		updateDB(email, user)
+		callback('success')
+	})
+}
+
 /** Adds a new user document to the database and returns a callback either 'error' or 'success'
  * @param {JSON} record The new users data to add to the database
  * @param {string} table the collection name
@@ -193,10 +207,11 @@ function deleteUserDB(record, table, callback) {
  * @param {string} email The users email address
  * @param {string} list The new lists name
  */
-function addListDB(email, list) {
+function addListDB(email, list, callback) {
 	readFile(email, (user) => {
 		user.lists.push(list);
 		updateDB(email, user);
+		callback('success')
 	});
 }
 
@@ -207,7 +222,7 @@ function addListDB(email, list) {
 function deleteListDB(email, list, callback) {
 	readFile(email, (user) => {
 		listIndex = getListIndex(list, user)
-		user.lists.splice(listIndex)
+		user.lists.splice(listIndex, 1)
 		updateDB(email, user)
 		callback('success')
 	})
@@ -287,6 +302,19 @@ function deleteItemDB(email, list, category, item, callback) {
 	});
 }
 
+/*
+function renameListDB(newname, email){
+  connectDB((collection, db, client) => {
+      //readFile(email);
+	
+		collection.update({email: email},{$set:{name:newname}});
+		//updateDB(email, user);
+
+		callback('success');
+	});
+}
+*/
+    
 module.exports = {
 	login,
 	signup,
@@ -295,6 +323,7 @@ module.exports = {
 	getItemIndex,
 	readFile,
 	updateDB,
+	renameDB,
 	addUserDB,
     deleteUserDB,
     addListDB,
@@ -302,5 +331,25 @@ module.exports = {
     addCategoryDB,
     deleteCategoryDB,
     addItemDB,
-    deleteItemDB
+    addListDB,
+    deleteItemDB,
+    deleteListDB
+
 }
+
+
+	
+
+
+// henrys unittest example to me (nick)
+// var obj = {
+// 	id:expect.anything(),
+// 	name:expect.anything()
+// }
+
+// test("dbRead", (done)=>{
+// 	readFile({data:"stuff"}, (err, data)=>{
+// 		expect(data).toBe("failed");
+// 		expect(data).toEqual(obj);
+// 		done();
+// 	})
