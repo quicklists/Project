@@ -37,8 +37,8 @@
 function addCategory() {
 	var newCategory = prompt('Enter a new category name:');
 	if (newCategory != null) {
-		if (newCategory.length < 5) {
-			swal('Category name have atleast 5 characters')
+		if (newCategory.length < 3 || newCategory.length > 15) {
+			swal('Category name must be between 3 and 15 characters')
 		} else {
 			var xhr = new XMLHttpRequest();
 			xhr.open('POST', '/addCategory');
@@ -120,8 +120,8 @@ function addItem() {
 			swal('Category does not exist!')
 		} else {
 			if (newItem === null) {
-			} else if (newItem.length < 3) {
-				swal('Item name must be 3 characters long')
+			} else if (newItem.length < 3 || newItem.length > 15) {
+				swal('Item name must between 3 and 15 characters long')
 			} else {
 				var xhr = new XMLHttpRequest();
 				xhr.open('POST', '/addItem');
