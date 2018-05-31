@@ -2,7 +2,7 @@
 <html>
     <head>
         <title> Signup Page </title>
-        <link href="signup.css" rel="stylesheet" type="text/css"> 
+        <link href="style/signup.css" rel="stylesheet" type="text/css"> 
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <a href="login.hbs"></a>
     </head>
@@ -11,13 +11,16 @@
         <!-- <h1> Quicklist </h1> -->
         
         <div id="signupscreen">
+            <div id='error'>
+                {{error}}
+            </div>
             <form action="/signup" method="post">
                 <label for="username"> Username </label> </br>
                 <input type="text" id="username" name="username" class="txt" >
                 </br> </br>  
            
                 <label for="email"> Email </label> </br>
-                <input type="email"  id="email" name="email" class="txt">
+                <input type="text"  id="email" name="email" class="txt">
                 </br> </br>
             
                 <label for="password"> Password </label> </br>
@@ -28,14 +31,13 @@
                 <input type="password" id="repassword" name="repassword" class="txt"> 
                 </br> </br>
            
-                <input type="submit" value="Create Account" id="createacc"> </br>
+                <input type="submit" value="Create Account" id="createacc" onclick='return checkSignup()'> </br>
                 <p id="haveacc"> Have an account? </p> </br> &nbsp
                 <a href="/" id="signup"> Log in instead! </a>
             </form>
         </div>
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-        <script src='/signup_function.js'></script>
-        <script src='/signup.js'></script>
+        <script src='js/signup.js'></script>
     </body>
     
 </html>
