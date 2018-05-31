@@ -89,14 +89,24 @@ app.post('/login', function(req, res) {
  * @param {JSON} response
  */
 app.post('/signup', function (req, res) {
-    getDB.signup(req.body.username, req.body.email, req.body.password, req.body.repassword, (msg) => {
-        if (msg === 'failed') {
-            // res.render('signup.hbs')
-        } else {
-            req.session.msg = msg
+    getDB.readFile(req.body.email, (user) => {
+        if (user === 'failed') {
+            getDB.signup(req.body.username, req.body.email, req.body.password, req.body.repassword, (msg) => {
+                if (msg === 'failed') {
+                    // res.render('signup.hbs')
+                } else {
+                    req.session.msg = msg
+                    res.redirect('/')
+                }
+            });
             res.redirect('/')
+        } else {
+            res.render('signup.hbs', {
+                error: 'Email already in use'
+            });
         }
     });
+
 });
 
 /**
