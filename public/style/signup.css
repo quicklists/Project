@@ -49,7 +49,7 @@ label{
     font-family:verdana;
 }
  
-#createacc, #signup{
+#createacc{
     position:relative;
     left:135px;
     font-family:verdana;
@@ -68,14 +68,16 @@ label{
 }
  
 #signup{
-    top:-110px;
-    position:relative;
-    text-align:right;
+    font-family: verdana;
+    top: -110px;
+    position: relative;
+    text-align: center;
+    left: 105px;
 }
  
 #haveacc{
     position:relative;
-    left:-35px;
+    left:-65px;
     top:-55px;
     font-family:verdana;
     text-align:center;
