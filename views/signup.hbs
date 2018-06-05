@@ -24,7 +24,7 @@
                             <img class='img' id='usernameImg' />
                             <div id='usernameValidText'></div>
                         </div>
-                        <input type="text" class='input' id="usernameInput" name="username" maxlength='15'> 
+                        <input type="text" class='input' id="usernameInput" name="username" maxlength='15' onkeyup='updateUsernameValidation()' /> 
                     </div>
                
                     <div id='email' class='text'>
@@ -33,7 +33,7 @@
                             <img class='img' id='emailImg'/>
                             <div id='emailValidText'></div>
                         </div>
-                        <input type="text" class='input' id="emailInput" name="email" />
+                        <input type="text" class='input' id="emailInput" name="email" onkeyup='updateEmailValidation()' />
                     </div>
                     
                     <div id='password' class='text'>
@@ -42,7 +42,7 @@
                             <img class='img' id='passwordImg' />
                             <div id='passwordValidText'></div>
                         </div>
-                        <input type="password" class='input' id="passwordInput" name="password"> 
+                        <input type="password" class='input' id="passwordInput" name="password" onkeyup='updatePasswordValidation()' /> 
                         
                     </div>
 
@@ -52,7 +52,7 @@
                             <img class='img' id='repasswordImg' />
                             <div id='repasswordValidText'></div>
                         </div>
-                        <input type="password" class='input' id="repasswordInput" name="repassword"> 
+                        <input type="password" class='input' id="repasswordInput" name="repassword" onkeyup='updateRepasswordValidation()' /> 
                     </div>
 
                     <div id='emptyDiv'></div>

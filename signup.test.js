@@ -1,5 +1,12 @@
 var signup = require("./public/js/signup.js");
 
+// describe("checkSignup tests", () => {
+// 	test("Blank entrys or entrys with space should return false", () => {
+// 		expect(signup.checkSignup()).toBe(false)
+// 		expect(signup.checkSignup('  ')).toBe(false)
+// 	});
+// });
+
 describe("email validation", () => {
 	test("Email should have only one @", () => {
 		expect(signup.emailValidation('nick@@12@3.ca')).toBe(false)
