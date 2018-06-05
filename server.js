@@ -16,6 +16,8 @@ const port = process.env.PORT || 8080;
  */
 var app = express();
 
+var request = require('request');
+
 /** client-sessions module */
 const session = require('client-sessions');
 
@@ -89,24 +91,42 @@ app.post('/login', function(req, res) {
  * @param {JSON} response
  */
 app.post('/signup', function (req, res) {
-    getDB.readFile(req.body.email, (user) => {
-        if (user === 'failed') {
-            getDB.signup(req.body.username, req.body.email, req.body.password, req.body.repassword, (msg) => {
-                if (msg === 'failed') {
-                    // res.render('signup.hbs')
-                } else {
-                    req.session.msg = msg
-                    res.redirect('/')
-                }
-            });
-            res.redirect('/')
-        } else {
-            res.render('signup.hbs', {
-                error: 'Email already in use'
-            });
-        }
-    });
+    console.log('app');
+    if (req.body['g-recaptcha-response'] === '') {
+        res.render('signup.hbs', {
+            error: 'Please select captcha'
+        });
+    } else {
+        var secretKey = '6Ldty1wUAAAAAK-y1d9QsrNgcSbpHnNAL8Xe1ZbE'
+        var verificationUrl = 'https://www.google.com/recaptcha/api/siteverify?secret=' + secretKey +
+        '&response=' + req.body['g-recaptcha-response']
 
+        request(verificationUrl, function(error, response, body) {
+            body = JSON.parse(body)
+            if (body.success === 'true') {
+                // getDB.readFile(req.body.email, (user) => {
+                //     if (user === 'failed') {
+                //         getDB.signup(req.body.username, req.body.email, req.body.password, req.body.repassword, (msg) => {
+                //             if (msg === 'failed') {
+                //                 // res.render('signup.hbs')
+                //             } else {
+                //                 req.session.msg = msg
+                //                 res.redirect('/')
+                //             }
+                //         });
+                //     } else {
+                //         res.render('signup.hbs', {
+                //             error: 'Email already in use'
+                //         });
+                //     }
+                // });
+            } else {
+                res.render('signup.hbs', {
+                    error: 'Captcha failed, please try again'
+                });
+            }
+        });
+    }
 });
 
 /**
