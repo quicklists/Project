@@ -48,18 +48,18 @@ describe("email validation", () => {
 describe('Password strength validation', () => {
 	test('Password should be atleast 8 characters long', () => {
 		expect(signup.passwordValidation('Passwor4')).toBe(true)
-		expect(signup.passwordValidation('Passwor')).toBe(false)
+		expect(signup.passwordValidation('Passwor')).toBe(0)
 		expect(signup.passwordValidation('Passworddddddd1')).toBe(true)
 	});
 
 	test('Password should have atleast 1 capital letter', () => {
 		expect(signup.passwordValidation('Password1')).toBe(true)
-		expect(signup.passwordValidation('password1')).toBe(false)
+		expect(signup.passwordValidation('password1')).toBe(1)
 		expect(signup.passwordValidation('pasSWord1')).toBe(true)
 	});
 
 	test('Password should have atleast 1 number', () => {
-		expect(signup.passwordValidation('Password')).toBe(false)
+		expect(signup.passwordValidation('Password')).toBe(2)
 		expect(signup.passwordValidation('Password1')).toBe(true)
 		expect(signup.passwordValidation('Pa55w0rd1')).toBe(true)
 	});
