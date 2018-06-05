@@ -4,37 +4,71 @@
         <title> Signup Page </title>
         <link href="style/signup.css" rel="stylesheet" type="text/css"> 
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <a href="login.hbs"></a>
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     </head>
     
     <body>
-        <!-- <h1> Quicklist </h1> -->
-        
-        <div id="signupscreen">
-            <div id='error'>
-                {{error}}
+        <div id="signupOuter">
+            <div class='text' id='title'>
+                <font size='5'><b>Quicklist's</b></font> <br>
+                Quick and easy shopping lists <br>
+                <div id='error'>
+                    <b>{{error}}</b>
+                </div>
             </div>
-            <form action="/signup" method="post">
-                <label for="username"> Username </label> </br>
-                <input type="text" id="username" name="username" class="txt" >
-                </br> </br>  
-           
-                <label for="email"> Email </label> </br>
-                <input type="text"  id="email" name="email" class="txt">
-                </br> </br>
-            
-                <label for="password"> Password </label> </br>
-                <input type="password" id="password" name="password" class="txt"> 
-                </br> </br>
+            <div id='signupInner'>
+                <form action="/signup" method="post">
+                    <div id='username' class='text'>
+                        <br> Username
+                        <div class='validationCheck'>
+                            <img class='img' id='usernameImg' />
+                            <div id='usernameValidText'></div>
+                        </div>
+                        <input type="text" class='input' id="usernameInput" name="username" maxlength='15'> 
+                    </div>
+               
+                    <div id='email' class='text'>
+                        <br> Email 
+                        <div class='validationCheck'>
+                            <img class='img' id='emailImg'/>
+                            <div id='emailValidText'></div>
+                        </div>
+                        <input type="text" class='input' id="emailInput" name="email" />
+                    </div>
+                    
+                    <div id='password' class='text'>
+                        <br> Password
+                        <div class='validationCheck'>
+                            <img class='img' id='passwordImg' />
+                            <div id='passwordValidText'></div>
+                        </div>
+                        <input type="password" class='input' id="passwordInput" name="password"> 
+                        
+                    </div>
 
-                <label for="repassword"> Re-enter Password </label> </br>
-                <input type="password" id="repassword" name="repassword" class="txt"> 
-                </br> </br>
-           
-                <input type="submit" value="Create Account" id="createacc" onclick='return checkSignup()'> </br>
-                <p id="haveacc"> Have an account? </p> </br> &nbsp
-                <a href="/" id="signup"> Log in instead! </a>
-            </form>
+                    <div id='repassword' class='text'>
+                        <br> Re-enter Password
+                        <div class='validationCheck'>
+                            <img class='img' id='repasswordImg' />
+                            <div id='repasswordValidText'></div>
+                        </div>
+                        <input type="password" class='input' id="repasswordInput" name="repassword"> 
+                    </div>
+
+                    <div id='emptyDiv'></div>
+
+                    <div id='captcha'>
+                        <div class="g-recaptcha" data-sitekey="6Ldty1wUAAAAAGcCcNMStunspB7oxqwiHynNaVmM"></div>
+                    </div>
+               
+                    <input type="submit" value="Create Account" class='button' id="createAccount" onclick='return checkSignup()'> </br>
+                </form>
+            </div>
+
+            <div class='text' id="haveAccount">
+                <b>Already have an account?</b> <br>
+                <a href="/">Click here! </a>
+            </div>
         </div>
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script src='js/signup.js'></script>
