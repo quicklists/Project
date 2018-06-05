@@ -9,3 +9,4 @@ env:
   global:
     - DB_API="mongodb://Nick.s:student@ds014388.mlab.com:14388/grocery_list_project"
     - DB="grocery_list_project"
+    - CAPTCHA="6Ldty1wUAAAAAK-y1d9QsrNgcSbpHnNAL8Xe1ZbE"
