@@ -1,104 +1,73 @@
-var checkImg = 'https://i.pinimg.com/736x/17/91/b9/1791b973f4e58ab7f79ee39860fcceb9--is-the-best-what-is.jpg'
+var checkImg = 'img/check.png'
 var xImg = 'img/red_x.png'
 
-document.getElementById("usernameInput").addEventListener("keyup", function(){
-	var username = document.getElementById('usernameInput').value;
-	var usernameImg = document.getElementById('usernameImg');
-	var usernameText = document.getElementById('usernameValidText');
+function getInput(name) {
+	var value = document.getElementById(name + 'Input').value;
+	var img = document.getElementById(name + 'Img');
+	var text = document.getElementById(name + 'ValidText');
+	return [value, img, text]
+}
 
-	var user = usernameValidation(username)
-	usernameImg.style.display = "block";
+function updateInputValidation(img, text, msg, color) {
+	if (color === 'green') {
+		img.src = checkImg
+	} else {
+		img.src = xImg
+	}
+	img.style.display = 'block'
+	text.innerHTML = msg
+	text.style.color = color
+}
+
+function updateUsernameValidation() {
+	input = getInput('username')
+	var user = usernameValidation(input[0])
+
 	if (user === 0) {
-		usernameImg.src = xImg
-		usernameText.innerHTML = 'Username too short'
-		usernameText.style.color = 'red'
+		updateInputValidation(input[1], input[2], 'Username too short', 'red')
 	} else if (user === 1) {
-		usernameImg.src = xImg
-		usernameText.innerHTML = 'Username too long'
-		usernameText.style.color = 'red'
+		updateInputValidation(input[1], input[2], 'Username too long', 'red')
 	} else {
-		usernameImg.src = checkImg
-		usernameText.innerHTML = 'Username ok!'
-		usernameText.style.color = 'green'
+		updateInputValidation(input[1], input[2], 'Username ok!', 'green')
 	}
-});
+}
 
-document.getElementById("emailInput").addEventListener("keyup", function(){
-	var email = document.getElementById('emailInput').value;
-	var emailImg = document.getElementById('emailImg');
-	var emailText = document.getElementById('emailValidText');
+function updateEmailValidation() {
+	input = getInput('email')
 
-	emailImg.style.display = "block";
-	if (emailValidation(email)) {
-		emailImg.src = checkImg
-		emailText.innerHTML = 'Email ok!'
-		emailText.style.color = 'green'
+	if (emailValidation(input[0])) {
+		updateInputValidation(input[1], input[2], 'Email ok!', 'green')
 	} else {
-		emailImg.src = xImg
-		emailText.innerHTML = 'Email format incorrect'
-		emailText.style.color = 'red'
+		updateInputValidation(input[1], input[2], 'Email format incorrect', 'red')
 	}
-});
+}
 
-document.getElementById("passwordInput").addEventListener("keyup", function(){
-	var password = document.getElementById('passwordInput').value;
-	var passwordImg = document.getElementById('passwordImg');
-	var passwordText = document.getElementById('passwordValidText');
-
-	var ps = passwordValidation(password)
-	passwordImg.style.display = "block";
+function updatePasswordValidation() {
+	input = getInput('password')
+	var ps = passwordValidation(input[0])
 	if (ps === true) {
-		passwordImg.src = checkImg
-		passwordText.innerHTML = 'Password ok!'
-		passwordText.style.color = 'green'
+		updateInputValidation(input[1], input[2], 'Password ok!', 'green')
 	} else if (ps === 0) {
-		passwordImg.src = xImg
-		passwordText.innerHTML = 'Password too short'
-		passwordText.style.color = 'red'
+		updateInputValidation(input[1], input[2], 'Password too short', 'red')
 	} else if (ps === 1) {
-		passwordImg.src = xImg
-		passwordText.innerHTML = 'Password requires one Capital letter'
-		passwordText.style.color = 'red'
+		updateInputValidation(input[1], input[2], 'Password requires one capital letter', 'red')
 	} else if (ps === 2) {
-		passwordImg.src = xImg
-		passwordText.innerHTML = 'Password requires one number'
-		passwordText.style.color = 'red'
+		updateInputValidation(input[1], input[2], 'Password requires one number', 'red')
 	}
 
-	var repassword = document.getElementById('repasswordInput').value;
-	var repasswordImg = document.getElementById('repasswordImg');
-	var repasswordText = document.getElementById('repasswordValidText');
+	updateRepasswordValidation()
+}
 
-	repasswordImg.style.display = "block";
-	if (password === repassword) {
-		repasswordImg.src = checkImg
-		repasswordText.innerHTML = 'Passwords match!'
-		repasswordText.style.color = 'green'
-	} else {
-		repasswordImg.src = xImg
-		repasswordText.innerHTML = 'Passwords dont match'
-		repasswordText.style.color = 'red'
-	}
-});
-
-
-document.getElementById("repasswordInput").addEventListener("keyup", function(){
+function updateRepasswordValidation() {
 	var password = document.getElementById('passwordInput').value;
-	var repassword = document.getElementById('repasswordInput').value;
-	var repasswordImg = document.getElementById('repasswordImg');
-	var repasswordText = document.getElementById('repasswordValidText');
+	input = getInput('repassword')
 
-	repasswordImg.style.display = "block";
-	if (password === repassword) {
-		repasswordImg.src = checkImg
-		repasswordText.innerHTML = 'Passwords match!'
-		repasswordText.style.color = 'green'
+	if (password === input[0]) {
+		updateInputValidation(input[1], input[2], 'Passwords match!', 'green')
 	} else {
-		repasswordImg.src = xImg
-		repasswordText.innerHTML = 'Passwords dont match'
-		repasswordText.style.color = 'red'
+		updateInputValidation(input[1], input[2], 'Passwords dont match', 'red')
 	}
-});
+}
 
 /** This check all the fields in the sign up page are filled in correctly
  */
