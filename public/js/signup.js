@@ -1,27 +1,112 @@
-// document.getElementById("createacc").addEventListener("click", function(){
-// 	var username = document.getElementById('username').value
-// 	var email = document.getElementById('email').value;
-// 	var password = document.getElementById('password').value;
-// 	var repassword = document.getElementById('repassword').value;
-	
-// 	var msg = checkSignUp(username, email, password, repassword);
-// 	if (msg != "Account Created!"){
-// 		swal(msg);
-// 		document.getElementById('password').value = "";
-// 		document.getElementById('repassword').value = "";
-// 		if(msg === "Email format incorrect"){
-// 			document.getElementById('email').value = "";
-// 		}
-// 	}
-// });
+var checkImg = 'https://i.pinimg.com/736x/17/91/b9/1791b973f4e58ab7f79ee39860fcceb9--is-the-best-what-is.jpg'
+var xImg = 'img/red_x.png'
+
+document.getElementById("usernameInput").addEventListener("keyup", function(){
+	var username = document.getElementById('usernameInput').value;
+	var usernameImg = document.getElementById('usernameImg');
+	var usernameText = document.getElementById('usernameValidText');
+
+	var user = usernameValidation(username)
+	usernameImg.style.display = "block";
+	if (user === 0) {
+		usernameImg.src = xImg
+		usernameText.innerHTML = 'Username too short'
+		usernameText.style.color = 'red'
+	} else if (user === 1) {
+		usernameImg.src = xImg
+		usernameText.innerHTML = 'Username too long'
+		usernameText.style.color = 'red'
+	} else {
+		usernameImg.src = checkImg
+		usernameText.innerHTML = 'Username ok!'
+		usernameText.style.color = 'green'
+	}
+});
+
+document.getElementById("emailInput").addEventListener("keyup", function(){
+	var email = document.getElementById('emailInput').value;
+	var emailImg = document.getElementById('emailImg');
+	var emailText = document.getElementById('emailValidText');
+
+	emailImg.style.display = "block";
+	if (emailValidation(email)) {
+		emailImg.src = checkImg
+		emailText.innerHTML = 'Email ok!'
+		emailText.style.color = 'green'
+	} else {
+		emailImg.src = xImg
+		emailText.innerHTML = 'Email format incorrect'
+		emailText.style.color = 'red'
+	}
+});
+
+document.getElementById("passwordInput").addEventListener("keyup", function(){
+	var password = document.getElementById('passwordInput').value;
+	var passwordImg = document.getElementById('passwordImg');
+	var passwordText = document.getElementById('passwordValidText');
+
+	var ps = passwordValidation(password)
+	passwordImg.style.display = "block";
+	if (ps === true) {
+		passwordImg.src = checkImg
+		passwordText.innerHTML = 'Password ok!'
+		passwordText.style.color = 'green'
+	} else if (ps === 0) {
+		passwordImg.src = xImg
+		passwordText.innerHTML = 'Password too short'
+		passwordText.style.color = 'red'
+	} else if (ps === 1) {
+		passwordImg.src = xImg
+		passwordText.innerHTML = 'Password requires one Capital letter'
+		passwordText.style.color = 'red'
+	} else if (ps === 2) {
+		passwordImg.src = xImg
+		passwordText.innerHTML = 'Password requires one number'
+		passwordText.style.color = 'red'
+	}
+
+	var repassword = document.getElementById('repasswordInput').value;
+	var repasswordImg = document.getElementById('repasswordImg');
+	var repasswordText = document.getElementById('repasswordValidText');
+
+	repasswordImg.style.display = "block";
+	if (password === repassword) {
+		repasswordImg.src = checkImg
+		repasswordText.innerHTML = 'Passwords match!'
+		repasswordText.style.color = 'green'
+	} else {
+		repasswordImg.src = xImg
+		repasswordText.innerHTML = 'Passwords dont match'
+		repasswordText.style.color = 'red'
+	}
+});
+
+
+document.getElementById("repasswordInput").addEventListener("keyup", function(){
+	var password = document.getElementById('passwordInput').value;
+	var repassword = document.getElementById('repasswordInput').value;
+	var repasswordImg = document.getElementById('repasswordImg');
+	var repasswordText = document.getElementById('repasswordValidText');
+
+	repasswordImg.style.display = "block";
+	if (password === repassword) {
+		repasswordImg.src = checkImg
+		repasswordText.innerHTML = 'Passwords match!'
+		repasswordText.style.color = 'green'
+	} else {
+		repasswordImg.src = xImg
+		repasswordText.innerHTML = 'Passwords dont match'
+		repasswordText.style.color = 'red'
+	}
+});
 
 /** This check all the fields in the sign up page are filled in correctly
  */
-function checkSignup(){
-	var username = document.getElementById('username').value;
-	var email = document.getElementById('email').value;
-	var password = document.getElementById('password').value;
-	var repassword = document.getElementById('repassword').value;
+function checkSignup() {
+	var username = document.getElementById('usernameInput').value;
+	var email = document.getElementById('emailInput').value;
+	var password = document.getElementById('passwordInput').value;
+	var repassword = document.getElementById('repasswordInput').value;
 
 	// if any entrys are blank display an alert
 	if(username === "" || username.indexOf(' ') >= 0) {
@@ -50,8 +135,18 @@ function checkSignup(){
 			return false
 		}
 	} else {
-		swal{'Email format incorrect'}
+		swal('Email format incorrect')
 		return false
+	}
+}
+
+function usernameValidation(username) {
+	if (username.length < 3) {
+		return 0
+	} else if (username.length > 15) {
+		return 1
+	} else {
+		return true
 	}
 }
 
@@ -75,13 +170,13 @@ function passwordValidation(password) {
 			if (password.replace(/[^0-9]/g, '').length > 0) {
 				return true
 			} else {
-				return false
+				return 2
 			}
 		} else {
-			return false
+			return 1
 		}
 	} else {
-		return false
+		return 0
 	}
 }
 
