@@ -1,6 +1,6 @@
 body {
-	margin: 0;
-	padding: 0;
+    margin: 0;
+    padding: 0;
     font-family: Arial, Helvetica, sans-serif;
     /*background-image: url(shopcart4.jpg);*/
     background-repeat: no-repeat;
@@ -9,7 +9,6 @@ body {
     background-size: cover;
 }
 
-
 /*For the Navigation bar*/
 #navBar {
     list-style-type: none;
@@ -17,6 +16,9 @@ body {
     padding: 0;
     overflow: hidden;
     background-color: #315EDC;
+    position: fixed;
+    z-index: 1;
+    top: 0;
     width: 100%;
     box-shadow: 0 2px 7px #888888;
 }
@@ -27,19 +29,19 @@ body {
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
-   	float: left;
+    float: left;
 }
 .navBarLeft:hover {
     background-color: #073364;
 }
 
 .navBarRight {
-	display: block;
+    display: block;
     color: white;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
-	float: right;
+    float: right;
 }
 .navBarRight:hover {
     background-color: #073364;
@@ -50,15 +52,16 @@ body {
 }
 
 #editList {
-	background-color: #073364;
+    background-color: #073364;
 }
 
 ul {
-	list-style-type: none;
+    list-style-type: none;
     padding-left:0px;
 }
 #categories {
     position: absolute;
+    max-width: 100%;
     text-align: center;
     width: 50vw;
     left: 0px;
@@ -69,6 +72,7 @@ ul {
     border-radius: 10px;
     opacity: 0.95;
 }
+
 button {
     background-color: #315EDC;
     border: 0.5px solid #002280;
@@ -83,16 +87,25 @@ button {
     opacity: 0.7;
     border-radius: 5px;
 }
+
 button:hover {
     opacity: 1.0;
     transition: 0.4s;
 }
+
+#outsideMenu {
+    position: relative;
+    top: 32px;
+}
+
 #menu {
     position: absolute;
+    top: 23px;
     right:0px;
     left:0px;
     text-align: center;
 }
+
 hr {
     border: 0;
     height: 1px;
@@ -105,7 +118,11 @@ hr {
 
 .deleteItem {
     position: absolute;
+    padding: 3px;
+    width: 30px;
+    height: 25px;
     right: 5%;
+    margin: auto;
     background-color: red;
 }
 
