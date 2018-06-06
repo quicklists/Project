@@ -47,21 +47,22 @@ form {
 }
 
 #signupOuter {
-    height: 80%;
-    width: 30%;
+    height: 510px;
+    width: 420px;
+    max-width: 100%;
     background-color: #FFFFFF;
-    position: absolute;
+    position: fixed;
     margin: auto;
     top: 0px;
     bottom: 0px;
     left: 0px;
     right: 0px;
-    box-shadow: 0 3px 7px #888888;
+    box-shadow: 0px 3px 7px #888888;
 }
 
 #signupInner {
-    height: 70%;
-    width: 90%;
+    height:350px;
+    width:380px;
     background-color: #A0C4F5;
     position: absolute;
     margin: auto;
@@ -99,8 +100,7 @@ form {
     width: 75.5%;
     height: 25%;
     margin: auto;
-    left: 5px;
-    right: 0;
+    right: 8px;
 }
 
 #haveAccount {
@@ -113,7 +113,7 @@ form {
 
 #createAccount {
     position: absolute;
-    right: 15px;
+    left: 240px;
     bottom: -70px;
 }
 
