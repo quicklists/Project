@@ -1,94 +1,106 @@
+html {
+    height: 100%;
+}
+
 body {
-	margin: 0;
-	padding: 0;
-	z-index:2;
-    background-image:url("shopcart4.jpg");
+    height: 100%;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background: linear-gradient(#173B81, #7480EB);
+}
+
+form {
+    width: 100%;
+    height: 100%;
+}
+
+.button {
+    background-color: #315EDC;
+    border: 0.5px solid #002280;
+    color: white;
+    padding: 15px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 0px;
+    cursor: pointer;
+    opacity: 0.7;
+    border-radius: 5px;
 }
 
 .text {
 	font-family: verdana;
-	color: black;
+	color: #333333;
+}
+
+.input {
+    width: 100%;
+    height: 23px;
+    border: 1px;
+    box-shadow: 0 2px 7px #888888;
+}
+
+#loginOuter {
+    height: 510px;
+    width: 420px;
+    max-width: 100%;
+    background-color: #FFFFFF;
+    position: fixed;
+    margin: auto;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    box-shadow: 0px 3px 7px #888888;
+}
+
+#loginInner {
+    height: 65%;
+    width:90%;
+    background-color: #A0C4F5;
+    position: absolute;
+    margin: auto;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    box-shadow: inset 0px 11px 8px -10px #888888;
+}
+
+#loginLogo {
 	text-align: center;
 }
 
-#title {
-	text-align:center;
-	top: 50px;
-	right: 0px;
-	left: 0px;
-	position: fixed;
-	margin: auto;
-	z-index:5;
-}
-
-#login {
-	height:320px;
-    width:320px;
-    background-color:#cfe0e8;
-    position:fixed;
-    top:0px;
-    bottom:0px;
-    left:0px;
-    right:0px;
-    margin:auto;
-    border-color:black;
-    border-style:solid;
-}
-
-#emailEntry {
-	position: absolute;
-	top: 5%;
-	left: 0;
-	right: 0;
-	color: black;
-}
-
-#passwordEntry {
-	position: absolute;
-	top: 35%;
-	left: 0;
-	right: 0;
-	color: black;
+#emailEntry, #passwordEntry {
+    position: relative;
+    width: 88%;
+    height: 15%;
+    margin: auto;
+    top: 5%;
+    left: 0;
+    right: 0;
+    padding-top: 8%;
 }
 
 #submitEntry {
 	position: absolute;
-	top: 70%;
-	left: 0;
-	right: 0;
-	text-align: center;
-}
-
-#loginForm {
-	position: relative;
-	height: 80%;
-	width: 100%;	
+	bottom: -70px;
+	right: 0px;
 }
 
 #signup {
     position: absolute;
-	top: 85%;
-	left: 0;
-	right: 0;
+	width: 70%;
+	bottom: 19px;
+	left: -5px;
 	text-align: center;
 }
 
 #error {
 	position: relative;
 	text-align: center;
-	top: 56.5%;
 	color: red;
-}
-
-input[type=submit] {
-	border-radius:5px;
-    cursor:pointer;
-    border: 0.5px solid;
-    height:25px;
-    font-family:verdana; 
-}
-
-input[type=submit]:hover {
-	background-color:white;
-    transition:0.3s;
+	top: 5px;
 }
