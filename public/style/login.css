@@ -43,8 +43,8 @@ form {
 }
 
 #loginOuter {
-    height: 510px;
-    width: 420px;
+    height: 380px;
+    width: 400px;
     max-width: 100%;
     background-color: #FFFFFF;
     position: fixed;
@@ -78,7 +78,7 @@ form {
     width: 88%;
     height: 15%;
     margin: auto;
-    top: 5%;
+    top: 13%;
     left: 0;
     right: 0;
     padding-top: 8%;
@@ -86,7 +86,7 @@ form {
 
 #submitEntry {
 	position: absolute;
-	bottom: -70px;
+	bottom: -63px;
 	right: 0px;
 }
 
