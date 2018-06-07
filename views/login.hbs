@@ -4,37 +4,39 @@
 		<title>Login page</title>
 		<link href='style/login.css' rel='stylesheet' type='text/css' />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-        <a href="signup.hbs"></a>
 	</head>
 	<body>
-		<div id='login'>
+		<div id='loginOuter'>
 			<div id='loginLogo' class='text'>
-				<h2>QuickList</h2>
+				<font size='5'> <b> Quicklist's </b> </font> <br>
+				Quick and easy shopping lists
 			</div>
 
-			<form id='loginForm' action="/login" method="post">
-			    <div id='emailEntry' class='text'>
-			    	Email<br>
-			        <input type="text" name="email" placeholder='Enter your Email' /><br/>
-			    </div>
+			<div id="error">
+				{{error}}
+			</div>
 
-			    <div id='passwordEntry' class='text'>
-			    	Password<br>
-			        <input type="password" name="password" placeholder='Enter your Password' />
-			    </div>
+			<div id='loginInner'>
+				<form id='loginForm' action="/login" method="post">
+				    <div id='emailEntry' class='text'>
+				    	Email<br>
+				        <input type="text" name="email" class='input' /><br/>
+				    </div>
 
-			    <div id="error">
-			    	{{error}}
-			    </div>
+				    <div id='passwordEntry' class='text'>
+				    	Password<br>
+				        <input type="password" name="password" class='input' />
+				    </div>
 
-			    <div id='submitEntry'>
-			    	<input type="submit" value="Login"/>
-			    </div>
-			    
-                <div id="signup">
-                     New User? <a href="signup">Sign Up Here!</a> </br> 
-                </div>
-			</form>
+				    <div id='submitEntry'>
+				    	<input type="submit" class='button' value="      Login      "/>
+				    </div>
+				</form>
+			</div>
+			<div id="signup" class='text'>
+	            <b> Dont have an account? </b> <br>
+	            <a href="/signup">Click Here!</a>
+	        </div>
 		</div>
 	</body>
 </html>
