@@ -1,194 +1,72 @@
-
 <html>
   <head>
     <title>Place Autocomplete Store Search</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <link href='style/maps.css' rel='stylesheet' type='text/css'/>
-    
-    <meta charset="utf-8">
-    <style>
-    body {
-        
-        
-    }
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      #map {
-        float: center;
-            height:50%;
-            border-style: solid;
-    		border-width: 5px;
-    		margin-left: 310px;        
-      }
-     
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-      table {
-        font-size: 12px;
-      }
-      #map {
-        width: 440px;
-        margin:auto;
-      }
-      #listing {
-        
-        position: absolute;
-        width: 200px;
-        height: 470px;
-        overflow: auto;
-        margin-right: 500px;
-        left: 442px;
-        top: 0px;
-        cursor: pointer;
-        overflow-x: hidden;
-      }
-      #findstores {
-        position: absolute;
-        text-align: right;
-        width: 100px;
-        font-size: 14px;
-        padding: 4px;
-        z-index: 5;
-        margin-top: 80px;
-        background-color: #fff;
-      }
-      #locationField {
-        position: absolute;
-        width: 190px;
-        height: 25px;
-        left: 108px;
-        top: 0px;
-        z-index: 5;
-        background-color: #fff;
-        margin-top: 92px;
-        margin-left: 310px;
-      }
-
-      #greyscale {
-      	position: relative;
-		margin-top: 0px;
-		width: 70%;
-		margin-left: 15%;
-		margin-right: auto;
-		background-color: #daebe8;
-		min-height: 100vh;
-      }
-
-      #controls {
-        position: absolute;
-        left: 300px;
-        width: 140px;
-        top: 0px;
-        z-index: 5;
-        background-color: #fff;
-        margin-top: 92px;
-        margin-left: 350px;
-      }
-      #autocomplete {
-        width: 100%;
-      }
-      #country {
-        width: 100%;
-      }
-      .placeIcon {
-        width: 20px;
-        height: 34px;
-        margin: 4px;
-      }
-      .hotelIcon {
-        width: 24px;
-        height: 24px;
-      }
-      #resultsTable {
-        border-collapse: collapse;
-        width: 240px;
-        
-      }
-      #rating {
-        font-size: 13px;
-        font-family: Arial Unicode MS;
-      }
-      .iw_table_row {
-        height: 18px;
-      }
-      .iw_attribute_name {
-        font-weight: bold;
-        text-align: right;
-        align:left;
-      }
-      .iw_table_icon {
-        text-align: right;
-      }
-    </style>
+    <meta charset="utf-8"> 
   </head>
 
   <body>
     {{> navbar}}
     <br>
     <br>
-    <div id="locationField">
-      <input id="autocomplete" placeholder="Enter a city" type="text" />
-    </div>
+    <div id = "outermain">
+      <div id ="innermain">
+        <div id="locationField">
+          <input id="autocomplete" placeholder="Enter a city" type="text" />
+        </div>
 
-    <div id="controls">
-      <select id="country">
-        <option value="ca">Canada</option>
-        <option value="us" selected>U.S.A.</option>
-        
-      </select>
-    </div>
+        <div id="controls">
+          <select id="country">
+            <option value="ca">Canada</option>
+            <option value="us" selected>U.S.A.</option>
+            
+          </select>
+        </div>
+        <br>
+        <img src = "newlogo.png" style="display: block; margin-right: auto; margin-left: auto;" />
+        <br>
+        <p style="text-align:center;"> Find all the items from your lists at nearby Department Stores using our store finder. 
+          Search all over Canada and the US!
+        </p>
+        <br>
 
-    <br>
-    <br>
-    <br>
-    <br>
-    <div id = "greyscale">
-    	<br>
-    	<img src = "newlogo.png" style="display: block; margin-right: auto; margin-left: auto;" />
-    	<br>
-    	<p style="text-align:center;"> Find all the items from your lists at nearby Department Stores using our store finder. 
-    		Search all over Canada and the US!
-    	</p>
-    	<br>
+        <div id="map"></div>
 
-    <div id="map"></div>
+        <div id="listing">
+          <table id="resultsTable">
+            <tbody id="results"></tbody>
+          </table>
+        </div>
 
-    <div id="listing">
-      <table id="resultsTable">
-        <tbody id="results"></tbody>
-      </table>
-    </div>
-
-    <div style="display: none">
-      <div id="info-content">
-        <table>
-          <tr id="iw-url-row" class="iw_table_row">
-            <td id="iw-icon" class="iw_table_icon"></td>
-            <td id="iw-url"></td>
-          </tr>
-          <tr id="iw-address-row" class="iw_table_row">
-            <td class="iw_attribute_name">Address:</td>
-            <td id="iw-address"></td>
-          </tr>
-          <tr id="iw-phone-row" class="iw_table_row">
-            <td class="iw_attribute_name">Telephone:</td>
-            <td id="iw-phone"></td>
-          </tr>
-          <!-- <tr id="iw-rating-row" class="iw_table_row">
-            <td class="iw_attribute_name">Rating:</td>
-            <td id="iw-rating"></td>
-          </tr> -->
-          <tr id="iw-website-row" class="iw_table_row">
-            <td class="iw_attribute_name">Website:</td>
-            <td id="iw-website"></td>
-          </tr>
-        </table>
+        <div style="display: none">
+          <div id="info-content">
+            <table>
+              <tr id="iw-url-row" class="iw_table_row">
+                <td id="iw-icon" class="iw_table_icon"></td>
+                <td id="iw-url"></td>
+              </tr>
+              <tr id="iw-address-row" class="iw_table_row">
+                <td class="iw_attribute_name">Address:</td>
+                <td id="iw-address"></td>
+              </tr>
+              <tr id="iw-phone-row" class="iw_table_row">
+                <td class="iw_attribute_name">Telephone:</td>
+                <td id="iw-phone"></td>
+              </tr>
+              <!-- <tr id="iw-rating-row" class="iw_table_row">
+                <td class="iw_attribute_name">Rating:</td>
+                <td id="iw-rating"></td>
+              </tr> -->
+              <tr id="iw-website-row" class="iw_table_row">
+                <td class="iw_attribute_name">Website:</td>
+                <td id="iw-website"></td>
+              </tr>
+            </table>
+          </div>
+        </div>
       </div>
-    </div>
-</div>
+  </div>
     <script>
    
 

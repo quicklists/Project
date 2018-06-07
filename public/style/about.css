@@ -56,6 +56,10 @@ div.innermain a:hover {
     float: left;
 }
 
+.navBarLeft:hover {
+    background-color: #073364;
+}
+
 .navBarRight {
     display: block;
     color: white;
@@ -63,6 +67,10 @@ div.innermain a:hover {
     padding: 14px 16px;
     text-decoration: none;
     float: right;
+}
+
+.navBarRight:hover {
+    background-color: #073364;
 }
 
 .navBarLink:hover {
@@ -78,6 +86,10 @@ div.innermain a:hover {
 div#logo {
     padding: 15px;
     text-align: center;
+}
+
+img {
+    max-width: 100%;
 }
 
 div#tagline {
