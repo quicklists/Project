@@ -64,8 +64,9 @@ form {
 #signupInner {
     height:350px;
     width:380px;
+    max-width: 90%;
     background-color: #A0C4F5;
-    position: absolute;
+    position: fixed;
     margin: auto;
     top: 0px;
     bottom: 0px;
@@ -97,11 +98,14 @@ form {
 }
 
 #captcha {
-    position: relative;
-    width: 75.5%;
-    height: 25%;
+    position: fixed;
+    width: 300px;
+    height: 225px;
     margin: auto;
-    right: 8px;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
+    top: 368px;
 }
 
 #haveAccount {
@@ -113,9 +117,15 @@ form {
 }
 
 #createAccount {
-    position: absolute;
+    position: fixed;
+    padding: 1px;
+    width: 132px;
+    height: 45px;
+    margin: auto;
+    right: 0px;
     left: 240px;
-    bottom: -70px;
+    bottom: 0px;
+    top: 430px;
 }
 
 #error {
