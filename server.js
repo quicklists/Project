@@ -96,7 +96,7 @@ app.post('/signup', function (req, res) {
             error: 'Please select captcha'
         });
     } else {
-        var secretKey = '6Ldty1wUAAAAAK-y1d9QsrNgcSbpHnNAL8Xe1ZbE'
+        var secretKey = '6LcQxXUUAAAAADV6kOZ462A1oHpCd9iCaNiHbbHk'
         var verificationUrl = 'https://www.google.com/recaptcha/api/siteverify?secret=' + secretKey +
         '&response=' + req.body['g-recaptcha-response']
 
