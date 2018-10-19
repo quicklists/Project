@@ -19,6 +19,14 @@ Getting the documentation:
 1. navigate to the repository directory
 2. jsdoc server.js
 
+How to add a file and commit it in GitHub:
+1. git status
+2. git add .
+3. git commit -m "message"
+4. git push origin master
+5. git fetch upstream
+6. git merge upstream/master
+
 Merging the main repository to your local repository:
 1. open git bash and move to the correct directory
 2. git fetch upstream
